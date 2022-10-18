@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body %}
+<!--<link rel="stylesheet" href="{% static 'reg/css/style.css' %}">-->
+<style>
+    .container{
+    padding-top: 10px;
+    padding-left: 200px;
+    padding-right: 200px;
+    color: black;
+    }
+    
+    
+
+</style>
+
+    
+<div class="container">
+<h1>Join Today</h1>
+<hr>
+
+<form method="POST">
+{% csrf_token %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <p {% if message.tags %} class="alert alert-{{message.tags}}"{% endif %}> {{message}}</p>
+    {% endfor %}
+    {% endif %}
+{{form | crispy}}
+<button class="btn btn-primary" type="submit">SignUp</button>
+<hr>
+<h6 style="padding-bottom:5px;">Already have an Account? &nbsp<a href="{% url 'login' %}" style="color:red;"> Login </a></h6>
+
+</form>
+</div>
+{% endblock body %}

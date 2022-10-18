@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+<style>
+
+.ecimg{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 44px;
+  padding-bottom: 45px;
+    }
+
+</style>
+
+
+<body>
+    <div class="container">
+<img src="{% static 'emptycart.png' %}" class="ecimg"></img>
+</div>
+</body>
+
+{% endblock body %}

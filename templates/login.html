@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+
+<style>
+
+#logbtn{
+    margin-top: 20px;
+}
+.container{
+    padding-top: 10px;
+    padding-left: 300px;
+    padding-right: 300px;
+
+}
+#signlink{
+    color: red;
+}
+
+
+#hrline2 {
+    position: relative;
+    top: -95px;
+    left: 31%;
+    width: 37%
+}
+
+#facebook1,
+#google1 {
+    width: 15px;
+    height: 15px;
+    position: relative;
+    left: -10%;
+    top: 1px
+}
+
+#facebook,
+#google {
+    width: 140px;
+    height: 40px;
+    position: relative;
+    top: -80px;
+    left: 12%;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: black;
+    font-size: 17px;
+    background-color: white
+}
+
+</style>
+
+<div class="container">
+
+    <h1>Login</h1>
+    <hr style="color:black;">
+
+    <form method="POST">
+
+    {% csrf_token %}
+    {{form | crispy}}
+    <a href="{% url 'password_reset' %}" style="color: #37A5E9;">Forgot Password?</a><br>
+    <button type="submit" class="btn btn-success" id="logbtn">Login</button><br>
+    <p class="text-center">OR</p>
+    <p class="text-center">Login with your social media account</p>
+
+    <div class="text-center social-btn">
+        <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Facebook</a>
+        <a href="#" class="btn btn-danger"><i class="fa fa-google"></i>&nbsp; Google</a>
+    </div><br>
+    <p class="text-center">Need An Account? <a class="ml-2" href="{% url 'register' %}" id="signlink">Create an Account</a></p>
+
+
+</form>
+</div>
+
+
+
+
+{% endblock body %}

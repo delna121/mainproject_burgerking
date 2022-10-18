@@ -1,0 +1,123 @@
+{% extends 'indext.html' %}
+{% load static %}
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+<style>
+
+.ecimg{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 44px;
+  padding-bottom: 45px;
+}
+.my_custom_table{
+    min-width:400px
+    font-size:14px
+}
+.my_custom_thead{
+    font-weight:normal;
+    text_transform:uppercase;
+    letter-spacing:.2em;
+    backgroud-color:#f8f8fa!important;
+}
+.custom_a{
+   text-decoration:none;
+}
+.custom_icon{
+   text-decoration:none;
+   color:#868e96 !important;
+}
+.my_custom_button{
+    margin-top:5px;
+}
+
+
+</style>
+
+
+{% if not cart_items %}
+<div class="container">
+   <img src="{% static 'emptycart.png' %}" class="ecimg"></img>
+</div>
+{% else %}
+<div>
+    <div class="text-center">
+        <br>
+        <h1 class="text-center my_title">
+            Here is your Cart
+        </h1>
+        <br>
+    </div>
+    <div class="row mx-auto">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+            <table class="table my_custom_table">
+                <thead class="my_custom_thead">
+                <tr>
+                    <th colspan="5">
+                        Your Items
+
+                    </th>
+
+                </tr>
+
+                </thead>
+                <tbody>
+                {% for cart_i in cart_items %}
+                <tr>
+                    <td>
+                        <a href="cart_i.product.get_absolute_url"><img src="{{cart_i.product.product_image.url}}" alt="product_image" class="float-left rounded custom_image"></a>
+
+                    </td>
+                    <td class="text-lef">
+                        {{cart_i.product.name}}
+                        <br>
+                        SKU: cart_i_product.id}}
+                        <br>
+                        Price: Rs {{cart_i.product.selling_price}}
+                        <br>
+                        Qty: {{cart_i.quantity}} x Rs {{cart_i}}
+
+                    </td>
+                    <td>
+                        Rs {{cart_i.sub_total}}
+
+                    </td>
+                    <td>
+                         &nbsp;<a href="{% url 'cart:add_to_cart' cart_i.product.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
+                        &nbsp;&nbsp;<a href="" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
+                         &nbsp;<a href="" class="custom_icon"><i class="fa fa-trash custom_icon"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    <div class="col-12 col-sm col-md-12 col-lg-6 text-center">
+        <table class="table my_custom_table">
+            <thead  class="my_custom_thead">
+            <tr>
+                <th>
+                    Checkout
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    Review your items before paying
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="mx-auto">
+            <a href="{% url 'index' %}"class="btn btn-secondary btn block my_custom_button">Continue shopping</a>
+
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
