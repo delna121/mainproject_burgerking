@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'cart',
+
     'jazzmin',
     'burger.apps.BurgerConfig',
     'django.contrib.admin',

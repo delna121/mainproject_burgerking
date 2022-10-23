@@ -1,8 +1,7 @@
-{% extends 'indext.html' %}
+
 {% load static %}
 {% block title %} Cart {% endblock %}
 
-{% block content %}
 <style>
 
 .ecimg{
@@ -20,7 +19,7 @@
     font-weight:normal;
     text_transform:uppercase;
     letter-spacing:.2em;
-    backgroud-color:#f8f8fa!important;
+    background-color:#f8f8fa!important;
 }
 .custom_a{
    text-decoration:none;
@@ -37,11 +36,9 @@
 </style>
 
 
-{% if not cart_items %}
-<div class="container">
-   <img src="{% static 'emptycart.png' %}" class="ecimg"></img>
-</div>
-{% else %}
+
+{% block content %}
+
 <div>
     <div class="text-center">
         <br>
@@ -64,30 +61,28 @@
 
                 </thead>
                 <tbody>
-                {% for cart_i in cart_items %}
+                {% for p in cart_product %}
                 <tr>
                     <td>
-                        <a href="cart_i.product.get_absolute_url"><img src="{{cart_i.product.product_image.url}}" alt="product_image" class="float-left rounded custom_image"></a>
+                        <a href="p.product.get_absolute_url"><img src="{{p.product.product_image.url}}" alt="product_image" class="float-left rounded custom_image"></a>
 
                     </td>
                     <td class="text-lef">
-                        {{cart_i.product.name}}
+                        {{p.product.name}}
                         <br>
-                        SKU: cart_i_product.id}}
+                        Price: Rs {{p.product.selling_price}}
                         <br>
-                        Price: Rs {{cart_i.product.selling_price}}
-                        <br>
-                        Qty: {{cart_i.quantity}} x Rs {{cart_i}}
+                        Qty: {{p.quantity}} * Rs {{p.product.selling_price}}
 
                     </td>
                     <td>
-                        Rs {{cart_i.sub_total}}
+                        Rs {{p.total_amount}}
 
                     </td>
                     <td>
-                         &nbsp;<a href="{% url 'cart:add_to_cart' cart_i.product.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
-                        &nbsp;&nbsp;<a href="" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
-                         &nbsp;<a href="" class="custom_icon"><i class="fa fa-trash custom_icon"></i></a>
+                         &nbsp;<a href="{% url 'add_to_cart' cart_item.p.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
+                        &nbsp;&nbsp;&nbsp;<a href="" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
+                         &nbsp;&nbsp;<a href="" class="custom_icon"><i class="fa fa-trash custom_icon"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -118,6 +113,6 @@
 
     </div>
 </div>
-{% endif %}
+
 
 {% endblock %}

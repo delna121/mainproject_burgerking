@@ -13,12 +13,12 @@ urlpatterns = [
     path('register/', views.register, name='register'),
 
 
-    path('login/', auth_views.LoginView.as_view(template_name = 'login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name = 'logout.html'), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
-    # path('add_to_cart/<int:product_id>/',views.add_to_cart, name='add_to_cart'),
-    # path('show_cart/', views.show_cart, name='show_cart'),
     path('address/', views.address, name='address'),
+    path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
+    path('show_cart/', views.show_cart, name='show_cart'),
 
     path('password_reset/',auth_views.PasswordResetView.as_view(), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),

@@ -39,6 +39,7 @@ STATE_CHOICES = (
 class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    phone = models.IntegerField(null=True)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     zipcode = models.IntegerField()
@@ -71,29 +72,6 @@ class Product(models.Model):
         return self.name
 
 
-# class Cart_details(models.Model):
-#     cart_id=models.CharField(max_length=250,blank=True)
-#     date_added=models.DateField(auto_now_add=True)
-#     class Meta:
-#         db_table='Cart_details'
-#         ordering=['date_added']
-#         def __str__(self):
-#             return '{}'.format(self.cart_id)
-#
-# class CartItem(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     cart=models.ForeignKey(Cart_details,on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.PositiveIntegerField(default=1)
-#     class Meta:
-#         db_table='CartItem'
-#
-#     def total_cost(self):
-#         return self.quantity * self.product.selling_price
-#
-#     def __str__(self):
-#         return '{}'.format(self.user)
-
 
     
 STATUS_CHOICES = (
@@ -123,6 +101,22 @@ class Deals(models.Model):
         return '{}'.format(self.name)
 
 
+
+
+
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.user)
+
+    @property
+    def total_cost(self):
+        return self.quantity * self.product.selling_price
 
 
 

@@ -7,7 +7,7 @@ from .models import *
 
 @admin.register(Customer)
 class CustomerModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'name', 'address', 'city', 'zipcode', 'state']
+    list_display = ['id', 'user', 'name','phone', 'address', 'city', 'zipcode', 'state']
 
 
 @admin.register(Category)
@@ -23,10 +23,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
-#
-# @admin.register(CartItem)
-# class CartModelAdmin(admin.ModelAdmin):
-#     list_display = ['user','cart_id','product', 'quantity']
+
 
 
 @admin.register(OrderPlaced)
@@ -38,3 +35,15 @@ class OrderPlacedModelAdmin(admin.ModelAdmin):
 class DealsAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+
+
+class CartItemAdmin(admin.ModelAdmin):
+    list_display = (
+        'product',
+        'quantity',
+        'user_id'
+    )
+
+
+
+admin.site.register(CartItem, CartItemAdmin)

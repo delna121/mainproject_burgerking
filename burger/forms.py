@@ -20,9 +20,10 @@ class UserRegistrationForm(UserCreationForm):
 class CustomerProfileForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['name','address','city','state','zipcode']
+        fields = ['name','phone','address','city','state','zipcode']
         widgets = {
         'name':forms.TextInput(attrs={'class':'form-control'}),
+        'phone':forms.NumberInput(attrs={'class':'form-control'}),
         'address':forms.TextInput(attrs={'class':'form-control'}),
         'city':forms.TextInput(attrs={'class':'form-control'}),
         'state':forms.Select(attrs={'class':'form-control'}),
