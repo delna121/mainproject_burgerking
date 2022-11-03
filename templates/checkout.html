@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+ <div class="row mt-5">
+  <div class="col-sm-6">
+    <h4>Order Summary</h4>
+    <hr>
+    
+      <div class="card mb-2">
+        <div class="card-body">
+        {% for cart in cart %}
+          <h5>Product: <strong>{{cart.product.name}}</strong></h5>
+          <p>Quantity: {{cart.quantity}}</p>
+          <p class="fw-bold"> <strong>Price:    {{cart.total_cost}}</strong></p>
+          {% endfor %}
+        </div>
+              </div>
+
+        <h5><strong>Total Cost: {{amount}} + {{shipping_amount}} = {{total_amount}}</strong></h5>
+        <br><br>
+      
+    <small>Term and Condition: By accessing or using the BurgerQueen Website, or by clicking to accept or agree to the Terms of Use when this option is made available to you, you represent that you have read and understood, and agree to be bound by these Terms of Use. If you do not agree to these Terms of Use, you may not use the BurgerQueen Website.</small>
+  </div>
+  <div class="col-sm-4 offset-sm-1">
+    <h4>Select Shipping Address</h4>
+    <hr>
+    <form action="">
+
+        {% for i in address %}
+        <div class="card">
+        <div class="card-body">
+        <h5>{{i.name}}</h5>
+       <p>{{i.phone}},<br>{{i.address}},<br>{{i.city}}, {{i.state}}, {{i.zipcode}}</p>
+        </div>
+      </div>
+        <div class="form-check mt-1 mb-5">
+          <input class="form-check-input" type="radio" value="" name="address">
+          <label class="form-check-label fw-bold" for="">
+            Address: {{forloop.counter}} </label>
+        </div>
+        {% endfor %}
+        
+        <div class="text-end">
+          <button type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock body %}

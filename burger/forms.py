@@ -8,7 +8,7 @@ class UserRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username','email','password1','password2']
+        fields = ['username', 'email', 'password1', 'password2']
         help_texts = {
             'username': None,
             'email': None,
@@ -22,10 +22,10 @@ class CustomerProfileForm(forms.ModelForm):
         model = Customer
         fields = ['name','phone','address','city','state','zipcode']
         widgets = {
-        'name':forms.TextInput(attrs={'class':'form-control'}),
-        'phone':forms.NumberInput(attrs={'class':'form-control'}),
-        'address':forms.TextInput(attrs={'class':'form-control'}),
-        'city':forms.TextInput(attrs={'class':'form-control'}),
-        'state':forms.Select(attrs={'class':'form-control'}),
-        'zipcode':forms.NumberInput(attrs={'class':'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone':forms.NumberInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.Select(attrs={'class': 'form-control'}),
+            'state': forms.TextInput(attrs={'class': 'form-control'}),
+            'zipcode': forms.NumberInput(attrs={'class': 'form-control'}),
         }

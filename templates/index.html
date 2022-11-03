@@ -45,8 +45,8 @@
 }
 
 
-body{
-
+html {
+  scroll-behavior: smooth;
 }
 
 .navbar{
@@ -156,7 +156,13 @@ object-fit: contain;
         <a class="nav-link" href="{% url 'index' %}">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'index' %}">Contact</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#deal">Deals</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="#product">Product</a>
       </li>
        
     </ul>
@@ -178,17 +184,20 @@ object-fit: contain;
           <a class="dropdown-item" href="#"><i class='fas fa-shopping-bag' style='font-size:20px'></i>&nbsp Orders</a>
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>&nbsp Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>&nbsp Logout</a>
+        </div>
       </li>
+
         <li class="nav-item">
         <a class="nav-link" href="{% url 'show_cart' %}"><span class="badge bg-danger"></span><i class="fa fa-shopping-cart" style="font-size:20px"></i> Cart</a>
       </li>
+
         
       {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'login' %}">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'register' %}">Register</a>
+        <a class="nav-link" href="{% url 'register.html' %}">Register</a>
       </li>
       {% endif %}
      </ul>
@@ -233,17 +242,7 @@ object-fit: contain;
 
 {% comment %} ****************************    CATEGORY  ********************************* {% endcomment %}
 
-      {% comment %} <a href="/category/{{c.pk}}">{{c.title}}</a> {% endcomment %}
-{% comment %} 
-{% for c in categories %}
-<div class="row">
-  <div class="column">
-    <div class="card-cat">
-      <a href="/category/{{c.pk}}"><img class="card-img-top" src="/media/{{c.image}}"></a>
-      <a href="/category/{{c.pk}}">{{c.title}}</a>
-    </div>
-  </div>
-{% endfor %} {% endcomment %}
+
 
 
 <div class="row col-12">
@@ -263,7 +262,7 @@ object-fit: contain;
 
 
 {% comment %} *********************** PRODUCTS  ***************************************** {% endcomment %}
-<div class="container-fluid m-0">
+<div id="product" class="container-fluid m-0">
         <div class="col-md-12">
             <div class="row mt-2 ">
                 <div class="col-sm-12 m-0">
@@ -300,7 +299,7 @@ object-fit: contain;
 </div>
 
 
-    <section class="portfolio py-5" id="deals">
+    <section class="portfolio py-5" id="deal">
     <div class="row justify-content-center mb-5">
           <div class="col-md-7 heading-section text-center ftco-animate">
           	<span class="subheading">Here we are!</span>
@@ -320,13 +319,15 @@ object-fit: contain;
             </div>
           {% endfor %}
         </div>
+    </section>
     </div>
-</section>
+</div>
+
 
 {% endblock body %}
 </div>
 
- <footer class="footer">
+ <footer id="contact" class="footer">
    
            <!-- Footer Elements -->
            <div class="container">
@@ -367,8 +368,7 @@ object-fit: contain;
     
            
          </footer>
-
-  {% comment %} <script>
+<script>
     $('.category').click(function (){
       var id = $(this).attr("cid").toString();
       console.log(id)
@@ -401,26 +401,26 @@ object-fit: contain;
           for(var i=0; i< subj.length; i++){
               //console.log(subj[i])
               sid += subj[i]
-              
+
           }
           console.log(sid)
           document.getElementById("delna").innerHTML += "<h1>" + sid + "</h1>"
 
-          
 
-           
+
+
 
       });
 
 
 
-     
+
 
         }
       })
     })
 
-  </script> {% endcomment %}
+  </script>
 
 
 

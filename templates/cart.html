@@ -1,6 +1,7 @@
 
 {% load static %}
-{% block title %} Cart {% endblock %}
+
+
 
 <style>
 
@@ -80,7 +81,7 @@
 
                     </td>
                     <td>
-                         &nbsp;<a href="{% url 'add_to_cart' cart_item.p.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
+                         &nbsp;<a href="{% url 'add_to_cart' p.id %}" class="custom_a"><i class="fa fa-plus custom_icon"></i></a>
                         &nbsp;&nbsp;&nbsp;<a href="" class="custom_a"><i class="fa fa-minus custom_icon"></i></a>
                          &nbsp;&nbsp;<a href="" class="custom_icon"><i class="fa fa-trash custom_icon"></i></a>
                     </td>

@@ -1,81 +1,326 @@
-{% extends 'index.html' %}
-{% load crispy_forms_tags %}
-{% block body %}
+<!doctype html>
+<html lang="en">
+{% load static %}
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+{% comment %} <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> {% endcomment %}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </head>
 
 
 <style>
 
-#logbtn{
-    margin-top: 20px;
-}
-.container{
-    padding-top: 10px;
-    padding-left: 300px;
-    padding-right: 300px;
-
-}
-#signlink{
-    color: red;
+* {
+  box-sizing: border-box;
 }
 
 
-#hrline2 {
-    position: relative;
-    top: -95px;
-    left: 31%;
-    width: 37%
+body{
+
 }
 
-#facebook1,
-#google1 {
-    width: 15px;
-    height: 15px;
-    position: relative;
-    left: -10%;
-    top: 1px
+.navbar{
+  {% comment %} font-family: 'Montserrat', sans-serif; {% endcomment %}
+  height: 85px;
 }
 
-#facebook,
-#google {
-    width: 140px;
-    height: 40px;
-    position: relative;
-    top: -80px;
-    left: 12%;
-    border-radius: 5px;
-    border-width: 1px;
-    border-color: black;
-    font-size: 17px;
-    background-color: white
+.nav-item{
+  padding-left:30px;
+  font-size: 16px;
 }
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 450px;
+  position: relative;
+  padding: 0px;
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.carousel-item{
+    width: 100%;
+    height: 350px;
+}
+.carousel-item img{
+    height: 350px;
+    width: 100%;
+}
+
+.card-img-top {
+width: 100%;
+height: 30vh;
+object-fit: contain;
+}
+
+.menu{
+  font-family: 'Montserrat', sans-serif;
+  padding-left:40px;
+}
+
+
+
+{% comment %}******************************* categories boxes *************{% endcomment %}
+.column {
+  float: left;
+  width: 12%;
+  padding: 0px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card-cat {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+
+.footer{
+  bottom: 0;
+  background-color: #FFC107 ;
+  padding-top:10px;
+  width:100%;
+  color: black;
+
+}
+
+{% comment %} .footer {
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: red;
+   color: white;
+   text-align: center;
+} {% endcomment %}
+
 
 </style>
 
-<div class="container">
 
-    <h1>Login</h1>
-    <hr style="color:black;">
+<body>
+<!-- ******************************* NAVBAR ***************************************************** -->
 
-    <form method="POST">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-warning" style="padding-left:40px;padding-right:40px;">
+  <a class="navbar-brand" href="{% url 'index' %}" style="max-width:6%; ">
+    <img src="{% static 'logo1.png' %}" class="img-fluid" style="border-radius:60%;">
+ </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    {% csrf_token %}
-    {{form | crispy}}
-    <a href="{% url 'password_reset' %}" style="color: #37A5E9;">Forgot Password?</a><br>
-    <button type="submit" class="btn btn-success" id="logbtn">Login</button><br>
-    <p class="text-center">OR</p>
-    <p class="text-center">Login with your social media account</p>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto" style="padding-left:30px">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Contact</a>
+      </li>
 
-    <div class="text-center social-btn">
-        <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i>&nbsp; Facebook</a>
-        <a href="#" class="btn btn-danger"><i class="fa fa-google"></i>&nbsp; Google</a>
-    </div><br>
-    <p class="text-center">Need An Account? <a class="ml-2" href="{% url 'register' %}" id="signlink">Create an Account</a></p>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      <ul class="navbar-nav mr-auto">
 
 
-</form>
+{% comment %} *****************  CHECKING AUTHENTICATION  ******************** {% endcomment %}
+
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{user.username}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i>&nbsp Add Address</a>
+          <a class="dropdown-item" href="#"><i class='fas fa-shopping-bag' style='font-size:20px'></i>&nbsp Orders</a>
+          <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>&nbsp Change Password</a>
+          <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>&nbsp Logout</a>
+        </div>
+      </li>
+
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'show_cart' %}"><span class="badge bg-danger"></span><i class="fa fa-shopping-cart" style="font-size:20px"></i>({{item_count}}) Cart</a>
+      </li>
+
+
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'register.html' %}">Register</a>
+      </li>
+      {% endif %}
+     </ul>
+    </form>
+  </div>
+</nav>
+
+{% load static %}
+
+ <link rel="stylesheet" type="text/css" href="{% static 'style1.css' %}">
+
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    {% include 'alert.html' %}
+
+  <script>
+      setTimeout(function(){
+        if ($('#msg').length > 0){
+          $('#msg').remove();
+          }
+        },4000)
+
+  </script>
+
+<script>
+  function validateform()
+            {
+                var a=document.getElementById('logName').value.trim();
+                var d=document.getElementById('logPassword').value.trim();
+
+				        var passpatern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+
+				if(a=="")
+                {
+					document.getElementById('logn').style.display="block";
+                    document.getElementById('logn').innerHTML="**Please Enter Username";
+                    return false;
+                }
+<!--                if(a.indexOf('@')<=0){-->
+<!--					document.getElementById('eml').style.display="block";-->
+<!--                    document.getElementById('eml').innerHTML="**Invalid  Email Address";-->
+<!--                    return false;-->
+<!--                }-->
+<!--				if ((a.charAt(a.length-4)!='.') && (a.charAt(a.length-3)!='.')) {-->
+<!--					document.getElementById('logName').style.display="block";-->
+<!--                    document.getElementById('logName').innerHTML="**Invalid  Email Address";-->
+<!--                    return false;-->
+<!--                }-->
+          else{
+            document.getElementById('logn').style.display="none";
+
+          }
+
+          if(d=="")
+                {
+					document.getElementById('pass').style.display="block";
+                    document.getElementById('pass').innerHTML="**please enter Password";
+                    return false;
+                }
+				if (!d.match(passpatern))
+                    {
+                        document.getElementById('pass').style.display="block";
+                        document.getElementById('pass').innerHTML="** capital | small | number | minimum 8 character";
+                        return false;
+                    }
+				else{
+					document.getElementById('pass').style.display="none";
+          return true;
+				}
+
+      }
+
+</script>
+
+
+  </div>
+
+
+
+    <div class="box">     
+        <div class="page">
+            <div class="header">
+                <a id="login" class="active" href="#login">login</a>
+                <a id="signup" href="{% url 'register.html' %}">signup</a>
+            </div>
+            <div id="errorMsg"></div>
+            <div class="content">
+                <form action="{% url 'login' %}" class="login" name="loginForm" onsubmit="return validateform()" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="username" id="logName" placeholder="Username" onKeyUp="return validateform()" onblur="return validateform()">
+                    <span id="logn" style="color: red;"></span>
+                    <input type="password" name="password" id="logPassword" placeholder="Password" onKeyUp="return validateform()" onblur="return validateform()">
+                    <span id="pass" style="color: red;"></span>
+                    <div id="check">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label><br>
+                    </div>
+                    <br><br>
+                    <input type="submit" value="Login">
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </form>
+<!--                {% comment %} <form class="signup" name="signupForm" onsubmit="return validateSignupForm()" method="POST">-->
+<!--                    <input type="email" name="email" id="signEmail" placeholder="Email">-->
+<!--                    <input type="text" name="name" id="signName" placeholder="Username">-->
+<!--                    <input type="password" name="password" id="signPassword" placeholder="Password"><br>-->
+<!--                    <input type="submit" value="SignUp">-->
+<!--                </form> {% endcomment %}-->
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
-
-{% endblock body %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>

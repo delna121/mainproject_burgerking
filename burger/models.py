@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+
 STATE_CHOICES = (
     ("Andhra Pradesh","Andhra Pradesh"),
     ("Arunachal Pradesh ","Arunachal Pradesh "),
@@ -36,12 +37,29 @@ STATE_CHOICES = (
     ("West Bengal","West Bengal"),
 
 )
+CITY_CHOICES = (
+    ("Alappuzha", "Alappuzha"),
+    ("Ernakulam ", "Ernakulam "),
+    ("Idukki", "Idukki"),
+    ("Kannur", "Kannur"),
+    ("Kasaragod", "Kasaragod"),
+    ("Kollam", "Kollam"),
+    ("Kottayam", "Kottayam"),
+    ("Kozhikode", "Kozhikode"),
+    ("Malappuram", "Malappuram"),
+    ("Palakkad", "Palakkad"),
+    ("Pathanamthitta ", "Pathanamthitta "),
+    ("Thiruvananthapuram", "Thiruvananthapuram"),
+    ("Thrissur", "Thrissur"),
+    ("Wayanad", "Wayanad"),
+
+)
 class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     phone = models.IntegerField(null=True)
     address = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
+    city = models.CharField(choices=CITY_CHOICES, max_length=60)
     zipcode = models.IntegerField()
     state = models.CharField(choices=STATE_CHOICES, max_length=60)
 
@@ -73,14 +91,14 @@ class Product(models.Model):
 
 
 
-    
+
 STATUS_CHOICES = (
     ('Accepted','Accepted'),
     ('Packed','Packed'),
     ('On The Way','On The Way'),
     ('Delivered','Delivered'),
     ('Cancel','Cancel'),
-    
+
 )
 
 class OrderPlaced(models.Model):
@@ -104,20 +122,14 @@ class Deals(models.Model):
 
 
 
-
-
-class CartItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+class Cart(models.Model):
+    user =models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-
+    quantity = models.PositiveIntegerField(default=1)
     def __str__(self):
         return str(self.user)
 
     @property
     def total_cost(self):
         return self.quantity * self.product.selling_price
-
-
-
 
