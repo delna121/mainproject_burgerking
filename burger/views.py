@@ -249,8 +249,8 @@ def checkout(request):
 
 
 
-def change(request):
-    return render(request,'changepassword.html')
+# "def change(request):
+#     return render(request,'changepassword.html')"
 
 # def logout(request):
 #     if 'user' in request.session:
