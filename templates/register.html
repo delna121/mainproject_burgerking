@@ -241,11 +241,24 @@ object-fit: contain;
                         <input type="text" class="form-input" name="last_name" id="lname" title="The name should begin with capital letter Followed by uppercase or lowercase" class="form-control" placeholder="Enter your last name" onkeyup='lnameValidation(this)'  required/>
                         <span class="error-msg" id="lname1"> </span><br>
                     </div>
+<!--                   Email verification-->
+                   <div id="email_div" style="display: block;">
                     <div class="form-group">
                         <i class="fa fa-envelope-o" aria-hidden="true"></i>
                         <input type="email" class="form-input" name="email" id="email" placeholder="Your Email"    required style="width:100%;" placeholder="Enter your email" onkeyup='emailValidation(this)' required/>
                         <span class="error-msg" id="email1"> </span><br>
+                        <button  onclick="ajax_send_otp()">Send OTP</button>
                     </div>
+                   </div>
+                   <div id="verify_text_div"></div>
+                        <div id="otp_div" style="display: none;" >
+                            <div class="form-group">
+                                <input type="text" class="form-input" name="otp" id="otp" placeholder="Your OTP" required style="    width:70%;" placeholder="Enter your otp" required/>
+                            </div>
+                            <button  onclick="verify_otp()">Verify</button>
+                        </div>
+<!--                   end-->
+
                     <!-- <div class="w3l-last-grid1">
                         <div class="w3l-grid1">
                            <label class="text">Email</label>
@@ -256,16 +269,15 @@ object-fit: contain;
                            </div>
                         </div> -->
 
-                    <div class="form-group">
+                    <div class="form-group" id="form_div" style="display: none;">
                         <input type="password" class="form-input" name="password" id="pass1"  placeholder="Password" onkeyup='passwordValidation(this)' required/>
-
-                       <span class="error-msg" id="password"></span><br>
-                    </div>
+                        <span class="error-msg" id="password" toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span><br>
                     <div class="form-group">
 
                     <input type="password" class="form-input" name="cpassword" id="pass2"  placeholder="Repeat your password" onkeyup='cpasswordValidation(this)' required/>
 
                     <span class="error-msg" id="confirmpassword"></span><br>
+                    </div>
                     </div>
                     <div class="form-group">
                         <input type="checkbox" name="agree-term" id="agree-term" class="agree-term"required />
@@ -284,6 +296,47 @@ object-fit: contain;
             </div>
         </div>
     </section>
+<script>
+     var otp_from_back="";
+     function ajax_send_otp(){
+        document.getElementById("email_div").style.display='none';
+        email = document.getElementById("email");
+      $.post("/send_otp",
+          {
+              "email":email.value,
+              "csrfmiddlewaretoken":"{{csrf_token}}"
+          },
+          function(data, status){
+              if(status=="success"){
+                  otp_from_back = data;
+                  document.getElementById("otp_div").style.display='block';
+                  }
+     }
+     );
+     }
+    function verify_otp(){
+        var user_otp=document.getElementById("otp").value;
+        if (user_otp==otp_from_back){
+            document.getElementById("verify_text_div").style.color="green";
+            document.getElementById("verify_text_div").innerHTML="OTP Verified";
+            document.getElementById("otp_div").style.display="none";
+            document.getElementById("form_div").style.display="block";
+        }
+        else{
+            document.getElementById("verify_text_div").style.color="red";
+            document.getElementById("verify_text_div").innerHTML="Try Again!!";
+        }
+    }
+ </script>
+    </div>
+<!--</section>-->
+
+<!--</div>-->
+
+{% for msg in messages %}
+<h3>{{msg}}</h3>
+{% endfor %}
+
 
 
 </div>

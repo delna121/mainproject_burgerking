@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
 
     'jazzmin',
+    'razorpay',
     'burger.apps.BurgerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'burger.context_processor.counter',
             ],
         },
     },
@@ -82,10 +84,10 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_project',
+        'NAME': 'mini_burger',
         'USER': 'root',
         'PASSWORD': '',
-        'PORT': '3307',
+        'PORT': '3306',
         'HOST': 'localhost',
 
     }
@@ -154,3 +156,6 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGIN_REDIRECT_URL = 'index'
 
 LOGIN_URL = 'login'
+
+RAZOR_KEY_ID="rzp_test_76zXSGrXEQqpYv"
+RAZOR_KEY_SECRET = "zSnHDF2ZLpB1cmgurrNQcgFg"

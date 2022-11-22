@@ -1,0 +1,115 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body %}
+
+<div class ="container">
+
+<header class="ttr-header">
+<style>
+.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  padding: 10px;
+}
+body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #222;
+  font-weight: 400;
+
+  background-image: url("{% static 'images/a.jpg' %}");
+  background-repeat: no-repeat;
+  background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -ms-background-size: cover;
+  background-position: center center;
+  padding: 115px 0; }
+
+</style>
+
+</header>
+<div class="container">
+<div class="db-breadcrumb"></div>
+	<div class="row">
+		<div class="center">
+			<div class="main">
+				<section class="sign-in">
+					<div class="container">
+						<div class="signin-content">
+							<div class="col-lg-12 m-b30">
+								<div class="widget-box">
+									<div class="wc-title">
+										<h4 style="font-size:20px;margin-left:2px;text-align:center;">Your Reviews</h4>
+									</div>
+									<div class="email-wrapper">
+				<!-- Your Profile Views Chart -->
+<div class="col-lg-12 m-b30">
+	<div class="widget-box">
+		<div class="email-wrapper">
+
+		=<div class="mail-list-container">
+		{% for message in messages %}
+         <h3 style="font-size:20px;margin-left:2px;color:red;text-align:center;" class="text-danger font-weight-bold">{{message}}</h3>
+           {% endfor %}
+			<form method="POST" action="{% url 'review' %}"class="mail-compose">
+				{% csrf_token %}
+				<div class="form-group col-2">
+										<input class="summernote" type="text" name="title" placeholder="Title">
+									</div>
+									<div class="form-group col-10">
+<!--										<input class="summernote" rows="10" cols="83"type="text" placeholder="Type here">-->
+										<textarea id="story" name="review" rows="10" cols="53" placeholder="Type here" required></textarea>
+									</div>
+<!--									<div class="form-group col-12">-->
+<!--										<div class="summernote"><p>Hello World</p></div>-->
+<!--									</div>-->
+<!--									<div class="form-group col-12">-->
+<!--										<input type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>-->
+<!--									</div>-->
+									<div class="form-group col-12">
+										<button type="submit" class="btn btn-lg">Send</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Your Profile Views Chart END-->
+			</div>
+</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+				</div>
+			</div>
+</div>
+</div>
+
+
+{% endblock body %}
+
+
+<!--	</main>-->
+<!--	<div class="ttr-overlay"></div>-->
+	<!-- header end -->
+
+<!-- External JavaScripts -->
+
+<script>
+    $(document).ready(function() {
+      $('.summernote').summernote({
+        height: 300,
+        tabsize: 2
+      });
+	  
+	   $('input[type="file"]').imageuploadify();
+    });
+</script>
+
+
+<!-- Mirrored from educhamp.themetrades.com/demo/admin/mailbox-compose.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 22 Feb 2019 13:11:45 GMT -->

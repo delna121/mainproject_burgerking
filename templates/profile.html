@@ -1,29 +1,140 @@
 {% extends 'index.html' %}
-{% load crispy_forms_tags %}
+<!--{% load crispy_forms_tags %}-->
 {% block body %}
+{% load static %}
 
 
-
+<link rel="stylesheet" href="{% static 'style1.css' %}">
 <div class="container my-5">
  <div class="row">
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
-    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Profile</a></li>
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-primary">Add Address</a></li>
     <li class="d-grid"><a href="{% url 'address' %}" class="btn">Address</a></li>
    </ul>
   </div>
-  <div class="col-sm-8 offset-sm-1">
-   <form method="POST">
-    {% csrf_token %}
-    {{form | crispy}}
-    <div class="col-11 mt-3">
-      <button type="submit" class="btn btn-primary">Submit</button>
+<div class="box">
+        <div class="page">
+            <div id="errorMsg"></div>
+            <div class="content">
+                <form onsubmit ="return nameValidation(),phoneValidation(),cityValidation(),zipValidation() " action="{% url 'profile' %}" method="post" align="center" id="logform" name="logform">
+                    {% include 'alert.html' %}
+                    {% csrf_token %}
+                    <input type="text" class="form-input" name="name" id="uname"  placeholder="Name" onkeyup='nameValidation(this)' required/>
+                    <span class="error-msg" id="pname"></span><br>
+
+                    <input type="text" class="form-input" name="phone" id="phone"  placeholder="Phone" onkeyup='phoneValidation(this)' required/>
+                    <span class="error-msg" id="pphone"></span><br>
+
+                    <input type="text" class="form-input" name="address" id="address"  placeholder="address" onkeyup='addressValidation(this)' required/>
+                    <span class="error-msg" id="paddress"></span><br>
+
+                    <input type="text" class="form-input" name="city" id="city"  placeholder="city" onkeyup='cityValidation(this)' required/>
+                    <span class="error-msg" id="pcity"></span><br>
+
+
+                    <input type="text" class="form-input" name="zipcode" id="zipcode"  placeholder="zipcode" onkeyup='zipValidation(this)' required/>
+                    <span class="error-msg" id="pzipcode"></span><br>
+                    <br>
+
+                    <input type="submit" value="update">
+
+                </form>
+            </div>
+        </div>
     </div>
-   </form>
-  </div>
  </div>
 </div>
-</body> 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+
+                </div>
+                <div class="w3l_form align-self">
+                    <div class="left_grid_info">
+                        <img src="{% static '' %}" alt="" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+
+function nameValidation(inputTxt){
+
+   var regx = /^[a-zA-Z]+$/;
+    var textField = document.getElementById("pname");
+
+    if(inputTxt.value != '' ){
+
+        if(inputTxt.value.length >= 3){
+
+            if(inputTxt.value.match(regx)){
+                textField.textContent = '';
+                textField.style.color = "green";
+
+            }else{
+                textField.textContent = 'only characters allowded';
+                textField.style.color = "red";
+            }
+        }else{
+            textField.textContent = 'your input mut me more than two chracters';
+            textField.style.color = "red";
+        }
+    }else{
+        textField.textContent = 'your input is empty';
+
+        textField.style.color = "red";
+    }
+}
+
+function cityValidation(inputTxt){
+
+   var regx = /^[a-zA-Z]+$/;
+    var textField = document.getElementById("pcity");
+
+    if(inputTxt.value != '' ){
+
+        if(inputTxt.value.length >= 3){
+
+            if(inputTxt.value.match(regx)){
+                textField.textContent = '';
+                textField.style.color = "green";
+
+            }else{
+                textField.textContent = 'only characters allowded';
+                textField.style.color = "red";
+            }
+        }else{
+            textField.textContent = 'your input mut me more than two chracters';
+            textField.style.color = "red";
+        }
+    }else{
+        textField.textContent = 'your input is empty';
+
+        textField.style.color = "red";
+    }
+}
+ function phoneValidation(inputTxt)
+ {
+    var val=document.getElementById('phone').value;
+    if (!val.match(/^[6789][0-9]{9}$/))
+    {
+       document.getElementById('pphone').innerHTML="only numbers are allowed";
+       document.getElementById('phone').value = val;
+       return false;
+       }
+       else{
+          document.getElementById('pphone').innerHTML="";
+           // return true;
+       }
+}
+
+</script>
+
 {% endblock body %}
 
 

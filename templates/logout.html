@@ -42,7 +42,11 @@
           </div>
       </div>
 </div>
+<div>
+<h6 style="padding-bottom:5px;">Do yo wanna deliver the taste of love? &nbsp<a href="{% url 'de_boy' %}" style="color:red;"> Join Us </a></h6>
 
+
+</div>
 <form method="POST">
 {% csrf_token %}
 
@@ -52,9 +56,9 @@
 <!--    {% endfor %}-->
 <!--    {% endif %}-->
 <!--{{form | crispy}}-->
-<form action="/register">
-    <button class="btn btn-secondary" type="submit">Sign-UP</button>
-</form>
+<!--<form action="/register">-->
+<!--    <button class="btn btn-secondary" type="submit">Sign-UP</button>-->
+<!--</form>-->
 <hr>
 <h6 style="padding-bottom:5px;">Already have an Account? &nbsp<a href="{% url 'login' %}" style="color:red;"> Login </a></h6>
 
