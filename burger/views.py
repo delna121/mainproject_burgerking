@@ -127,7 +127,8 @@ def review(request):
         usr = request.user
         title = request.POST.get('title')
         review = request.POST.get('review')
-        user = Reviews(title=title,review=review,user=usr)
+        image = request.FILES.get('wimg')
+        user = Reviews(title=title,review=review,image=image,user=usr)
         user.save()
         messages.info(request, 'Your review has been successfully send..!!')
         return redirect('review')
@@ -244,6 +245,7 @@ def show_cart(request):
 
 
 
+
 def pluscart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
@@ -307,7 +309,7 @@ def remove_ad(request, id):
     cart = Profile.objects.filter(user_id=user)
     if cart.exists():
         Profile.objects.get(id=id).delete()
-        messages.warning(request, "This address is removed!!!")
+        # messages.warning(request, "This address is removed!!!")
         # messages.info(request, "You don't have an active order")
         return redirect('/address')
 
@@ -364,7 +366,7 @@ def payment_done(request):
         c.delete()
     return redirect('order')
 def order(request):
-    placeorder = OrderPlaced.objects.filter(user=request.user)
+    order_placed = OrderPlaced.objects.filter(user=request.user)
     return render(request,'order.html',locals())
 
 
@@ -379,5 +381,3 @@ def de_cart(request, id):
 
 
 
-def de_boy(request):
-    return render(request,'deliver.html')

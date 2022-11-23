@@ -38,7 +38,7 @@
         </div>
       </div>
         <div class="form-check mt-1 mb-5">
-          <input class="form-check-input" type="radio" value="" name="address">
+          <input class="form-check-input" id="btn" type="radio" value="" name="address" required/>
 
           <label class="form-check-label fw-bold" for="">
             Address: {{forloop.counter}} </label>
@@ -51,15 +51,29 @@
 
         
         <div class="text-end">
-          <button id="rzp-button1" type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold">Payment</button>
+          <button  id="rzp-button1" type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold">Payment</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 {% endblock body %}
+
+<!--<script type="button/javascript">-->
+<!--    function EnableDisablebtn(){-->
+<!--    var add = document.getElementById("btn");-->
+<!--    var button1 =document.getElementById("rzp-button1");-->
+<!--    button1.disable = add.checked? false:true;-->
+<!--    button1.value="";-->
+<!--    if(!button1.disabled){-->
+<!--        button1.focus();-->
+<!--        }-->
+<!--    }-->
+
+<!--</script>-->
 {% block payment-gateway %}
  <script>
+
     var options = {
                     "key": 'rzp_test_76zXSGrXEQqpYv', // Enter the Key ID generated from the Dashboard
                     "amount": "{{razoramount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise

@@ -23,11 +23,36 @@
                     <input type="text" class="form-input" name="name" id="uname"  placeholder="Name" onkeyup='nameValidation(this)' required/>
                     <span class="error-msg" id="pname"></span><br>
 
-                    <input type="text" class="form-input" name="phone" id="phone"  placeholder="Phone" onkeyup='phoneValidation(this)' required/>
-                    <span class="error-msg" id="pphone"></span><br>
+                     <input type="text" name="phone" id="phone" placeholder="Phone No" required onkeyup='ValidatePhone(this)' required/>
+                    <span id="phoneError" style="color:rgb(255, 0, 0, 0.404);"></span>
+
+<!--                    <input type="text" class="form-input" name="phone" id="phone"  placeholder="Phone" onkeyup='phoneValidation(this)' required/>-->
+<!--                    <span class="error-msg" id="pphone"></span><br>-->
 
                     <input type="text" class="form-input" name="address" id="address"  placeholder="address" onkeyup='addressValidation(this)' required/>
                     <span class="error-msg" id="paddress"></span><br>
+
+
+<!--                    <div class="form-input">-->
+<!--                        <label for="" class="label">Select City</label>-->
+<!--			    					&lt;!&ndash; <input type="text" class="form-control" placeholder=""> &ndash;&gt;-->
+<!--                                    <select id="carmodel" name="carmodel" class="form-control" style="color: rgb(26, 8, 8);">-->
+<!--                                        <option selected>Choose...</option>-->
+<!--                                        {% for i in result %}-->
+<!--                                            <option style="color: black;">-->
+<!--                                              {{i.city}}-->
+<!--                                            </option>-->
+<!--                                        {% endfor %}-->
+<!--                                        &lt;!&ndash; <option style="color: black;">Alto</option>-->
+<!--                                        <option style="color: black;">Swift</option>-->
+<!--                                        <option style="color: black;">Xl6</option> &ndash;&gt;-->
+<!--                                      </select>-->
+<!--			    				</div>-->
+<!--                    <br>-->
+
+
+
+
 
                     <input type="text" class="form-input" name="city" id="city"  placeholder="city" onkeyup='cityValidation(this)' required/>
                     <span class="error-msg" id="pcity"></span><br>
@@ -118,20 +143,40 @@ function cityValidation(inputTxt){
         textField.style.color = "red";
     }
 }
- function phoneValidation(inputTxt)
- {
-    var val=document.getElementById('phone').value;
-    if (!val.match(/^[6789][0-9]{9}$/))
-    {
-       document.getElementById('pphone').innerHTML="only numbers are allowed";
-       document.getElementById('phone').value = val;
-       return false;
-       }
-       else{
-          document.getElementById('pphone').innerHTML="";
-           // return true;
-       }
-}
+function ValidatePhone(inputTxt){
+                var regx = /^[6789][0-9]{9}$/;
+                var textField = document.getElementById("phoneError");
+                    if(inputTxt.value != '' ){
+                    if(inputTxt.value.match(regx)){
+                        textField.textContent = '';
+                        textField.style.color = "white";
+                        }else{
+                            textField.textContent = '**not a valid phone number';
+                            textField.style.color = "red";
+                        }
+                }else{
+                    textField.textContent = 'your input is empty';
+                    textField.style.color = "red";
+                }
+            }
+
+
+
+
+<!-- function phoneValidation(inputTxt)-->
+<!-- {-->
+<!--    var val=document.getElementById('phone').value;-->
+<!--    if (!val.match(/^[6789][0-9]{9}$/))-->
+<!--    {-->
+<!--       document.getElementById('pphone').innerHTML="only numbers are allowed";-->
+<!--       document.getElementById('phone').value = val;-->
+<!--       return false;-->
+<!--       }-->
+<!--       else{-->
+<!--          document.getElementById('pphone').innerHTML="";-->
+<!--           // return true;-->
+<!--       }-->
+<!--}-->
 
 </script>
 

@@ -13,6 +13,7 @@ from .models import *
 
 admin.site.register(Cart)
 admin.site.register(Voucher)
+admin.site.register(Profile)
 
 def export_reg(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
@@ -59,8 +60,8 @@ class PaymentModelAdmin(admin.ModelAdmin):
 
 @admin.register(OrderPlaced)
 class OrderPlacedModelAdmin(admin.ModelAdmin):
-    list_display = ['id','user','product','quantity','ordered_date','status','payment']
-    list_editable = ['status']
+    list_display = ['user','product','quantity','ordered_date','status','payment']
+
 
 
 

@@ -1,35 +1,63 @@
 {% extends 'index.html' %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'app/css/order.css' %}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
 {% block body %}
 
-<script src="{% static 'app/js/order.js' %}"></script>
-<div class="card mt-50 mb-50">
-    <div class="col d-flex"><span class="text-muted" id="orderno">order #546924</span></div>
-    <div class="gap">
-        <div class="col-2 d-flex mx-auto"> </div>
-    </div>
-    <div class="title mx-auto"> Thank you for your order! </div>
-    <div class="main"> <span id="sub-title">
-            <p><b>Payment Summary</b></p>
-        </span>
-        <div class="row row-main">
-            <div class="col-3"> <img class="img-fluid" src="https://i.imgur.com/qSnCFIS.png"> </div>
-            <div class="col-6">
-                <div class="row d-flex">
-                    {% for i in order_placed %}
-                    <p><b>{{op.product.name}}</b></p>
-                    {% endfor %}
+<div class="container my-5">
+    <div class="row">
+        <h3>Helloo <span class="text-capitalize"> {{request.user}}</span> ...Here is your Orders!!</h3>
+        <div class="col-sm-2 border-end">
+            <ul class="list-unstyled">
+                <li class="d-grid"><a href="{% url 'index' %}" class="btn btn-primary">Continue Shoping</a> </li>
+            </ul>
+        </div>
+
+        <div class="col-sm-9 offset-sm-1">
+            {% for op in order_placed %}
+            <div class="row">
+                <div class="col-sm-2">
+                    <img src="{{op.product.product_image.url}}" class="img-fluid" height="100" width="100"/>
                 </div>
-                <div class="row d-flex">
-                    <p class="text-muted">128GB White</p>
+                <div class="col-sm-7">
+                    <p>Product : {{op.product.title}}</p>
+                    <p>Quantity : {{op.quantity}}</p>
+                    <p>Price : {{op.total_cost}}</p>
                 </div>
+                <div class="col-sm-3">
+                    <p>Order status : {{op.status}}</p>
+                    {% if op.status == 'Accepted' %}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar"style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endif %}
+                    {% if op.status == 'Packed' %}
+                    <div class="progress">
+                        <div class="progress-bar bg-info" role="progressbar"style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endif %}
+                    {% if op.status == 'On The Way' %}
+                    <div class="progress">
+                        <div class="progress-bar bg-warning" role="progressbar"style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                     {% endif %}
+
+                     {% if op.status == 'Delivered' %}
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar"style="width: 100%" aria-valuenow="100" ria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endif %}
+                    {% if op.status == 'Cancel' %}
+                    <div class="progress">
+                        <div class="progress-bar bg-danger" role="progressbar"style="width: 100%" aria-valuenow="100" ria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                </div>
+            {% endfor %}
             </div>
-            <div class="col-3 d-flex justify-content-end">
-                <p><b>$599</b></p>
-            </div>
+
         </div>
     </div>
+
 </div>
 {% endblock body %}

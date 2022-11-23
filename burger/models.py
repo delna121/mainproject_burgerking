@@ -38,20 +38,9 @@ STATE_CHOICES = (
 
 )
 CITY_CHOICES = (
-    ("Alappuzha", "Alappuzha"),
-    ("Ernakulam ", "Ernakulam "),
-    ("Idukki", "Idukki"),
-    ("Kannur", "Kannur"),
-    ("Kasaragod", "Kasaragod"),
-    ("Kollam", "Kollam"),
-    ("Kottayam", "Kottayam"),
-    ("Kozhikode", "Kozhikode"),
-    ("Malappuram", "Malappuram"),
-    ("Palakkad", "Palakkad"),
+
     ("Pathanamthitta ", "Pathanamthitta "),
-    ("Thiruvananthapuram", "Thiruvananthapuram"),
-    ("Thrissur", "Thrissur"),
-    ("Wayanad", "Wayanad"),
+
 
 )
 class Customer(models.Model):
@@ -65,6 +54,9 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
 
 class Profile(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE)
@@ -155,7 +147,6 @@ class Reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=True)
     review = models.CharField(max_length=500, blank=True)
-    star =models.IntegerField(default=False)
 
 
     def __str__(self):

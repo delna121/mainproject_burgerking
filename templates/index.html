@@ -14,6 +14,8 @@
      <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -37,10 +39,165 @@
 }
 
 
-body{
-
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
 }
 
+body{
+    background-color: white;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+@media (max-width: 1440px){
+    .main-wrapper{
+        width: 100vw;
+    }
+}
+
+.back-text{
+    position: relative;
+    z-index: -2000;
+}
+
+
+.reviews{
+    margin-top: 10rem;
+    overflow: hidden;
+}
+
+.reviews-title{
+    text-align: center;
+    margin-bottom: 7rem;
+}
+
+.reviews-title p{
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: white;
+}
+
+.reviews-card{
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    width: 781px;
+}
+
+@media (max-width: 425px){
+    .reviews-card{
+        grid-template-columns: 1fr;
+        width: fit-content;
+    }
+}
+.card-img{
+    width: fit-content;
+    height: fit-content;
+}
+
+.card-text{
+    background-color: white;
+    padding: 2rem 4rem;
+    height: 359px;
+    overflow: hidden;
+}
+
+@media (max-width: 425px){
+    .card-text{
+        padding: 1rem 2rem;
+        width: 70vw;
+        height: fit-content;
+    }
+}
+
+.card-title p{
+    font-weight: 800;
+    font-size: 2rem;
+    line-height: 105.52%;
+}
+
+.card-para{
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.card-author{
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+
+.reviews-row{
+    display: flex;
+    gap: 2rem;
+}
+
+@media (max-width: 425px){
+    .card-title p{
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    .card-para p{
+        font-size: 0.7rem;
+    }
+
+    .card-author p{
+        font-size: 0.7rem;
+    }
+    .reviews-row{
+        flex-direction: column;
+        margin: 0 auto;
+        width: fit-content;
+    }
+    .reviews img{
+        width: 70vw;
+    }
+}
+
+.row-first, .row-third{
+    animation: move-first 20s linear infinite;
+    margin-bottom: 2rem;
+}
+
+.row-second{
+    transform: translateX(-1000px);
+    animation: move-second 20s linear infinite;
+    margin-bottom: 2rem;
+}
+
+
+@media (max-width: 425px){
+    .row-second, .row-third{
+        display: none;
+    }
+
+    .row-first{
+        animation: none;
+    }
+}
+
+@keyframes move-first{
+    50%{
+        transform: translateX(-1000px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}
+
+@keyframes move-second{
+    50%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(-1000px);
+    }
+}
 .navbar{
   {% comment %} font-family: 'Montserrat', sans-serif; {% endcomment %}
   height: 85px;
@@ -170,7 +327,7 @@ body{
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Add Address</a>
-          <a class="dropdown-item" href="#"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Orders</a>
+          <a class="dropdown-item" href="{% url 'order' %}"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Orders</a>
           <a class="dropdown-item" href="{% url 'review' %}"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Review</a>
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>Logout</a>
@@ -245,6 +402,7 @@ body{
 	</div> 
 </div>
 
+
 {% endfor %}
 
 
@@ -289,12 +447,120 @@ body{
             </div>
         </div>
 </div>
-
-
-
-{% endblock body %}
-{% block payment-gateway %} {% endblock payment-gateway %}
 </div>
+
+<section class="reviews">
+        <div class="reviews-title">
+            <h3><strong>Reviews</strong></h3>
+        </div>
+        <div>
+
+            <div class="reviews-row row-first">
+                <div class="reviews-card">
+
+
+					{% for i in review %}
+
+
+                    <div class="card-text">
+                        <div class="card-title">
+                            <p>“{{i.title}}”</p>
+                        </div>
+                        <div class="card-para">
+                            <p>{{i.review}}
+                            </p>
+                        </div>
+
+                        <div class="card-author">
+                            <svg width="9" height="2" viewBox="0 0 9 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.526123 1.13867H8.25949" stroke="black" stroke-width="0.822209" />
+                            </svg>
+                            <p>{{i.user}}</p>
+                        </div>
+                    </div>
+					{% endfor %}
+                </div>
+                </div>
+
+        </div>
+</section>
+<!--    <div class="section-area section-sp2 bg-fix ovbl-dark">-->
+<!--        <div class="reviews-title">-->
+<!--            <p>Reviews</p>-->
+<!--        </div>-->
+<!--                <div class="container">-->
+<!--               <div class="row">-->
+<!--                  <div class="col-md-12 text-white heading-bx left">-->
+<!--                     <h2 class="title-head text-uppercase">what people <span>say</span></h2>-->
+<!--&lt;!&ndash;                     <p>It is a long established fact that a reader will be distracted by the readable content of a page</p>&ndash;&gt;-->
+<!--                  </div>-->
+<!--               </div>-->
+
+<!--               <div class="testimonial-carousel owl-carousel owl-btn-1 col-12 p-lr0">-->
+<!--{% for i in review %}-->
+<!--                  <div class="item">-->
+<!--                     <div class="testimonial-bx">-->
+<!--&lt;!&ndash;                        <div class="testimonial-thumb">&ndash;&gt;-->
+<!--&lt;!&ndash;                           <img src="{% static 'assets/images/testimonials/pic1.jpg' %}" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+
+<!--                        <div class="testimonial-info">-->
+<!--                           <h5 style="font-size:26px;margin-left:2px;color:red;text-align:left;" class="name">{{i.user}}</h5>-->
+<!--                           </div>-->
+<!--                        <div class="testimonial-info">-->
+<!--&lt;!&ndash;                           <p style="font-size:19px;margin-left:2px;color:green;;text-align:left;"> {{i.title}}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="testimonial-content">&ndash;&gt;-->
+<!--                           <p style="font-size:16px;margin-left:2px;text-align:left;color:blue;">"{{i.review}}!"</p>-->
+<!--                        </div>-->
+<!--                     </div>-->
+<!--                  </div>-->
+<!--{% endfor %}-->
+<!--               </div>-->
+<!--                </div>-->
+<!--    </div>-->
+<!--</div>-->
+{% endblock body %}
+
+
+<!--<section class="reviews">-->
+<!--        -->
+<!--        <div>-->
+
+<!--            <div class="reviews-row row-first">-->
+<!--                <div class="reviews-card">-->
+<!--					<img class="card-img" src="https://www.bing.com/th?id=OIP.ORMHtsTcF2sJ_FMXVFiQKAHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.25&pid=3.1&rm=2" alt="">-->
+
+<!--					{% for i in review %}-->
+
+
+<!--                    <div class="card-text">-->
+<!--                        <div class="card-title">-->
+<!--                            <p>“{{i.title}}”</p>-->
+<!--                        </div>-->
+<!--                        <div class="card-para">-->
+<!--                            <p>{{i.review}}-->
+<!--                            </p>-->
+<!--                        </div>-->
+
+<!--                        <div class="card-author">-->
+<!--                            <svg width="9" height="2" viewBox="0 0 9 2" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                <path d="M0.526123 1.13867H8.25949" stroke="black" stroke-width="0.822209" />-->
+<!--                            </svg>-->
+<!--                            <p>{{i.user}}</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--					{% endfor %}-->
+<!--                </div>-->
+<!--                </div>-->
+
+<!--        </div>-->
+<!--</section>-->
+
+
+
+{% block payment-gateway %} {% endblock payment-gateway %}
+
 
  <footer id="contact" class="footer">
    
