@@ -1,0 +1,62 @@
+{% load static %}
+
+
+<html>
+<head>
+    <link href="{% static 'style2.css' %}"rel="stylesheet">
+  <style>
+  #logo{
+  }
+.total-order{
+   backgroud-color: #FFC107
+  }
+.orders-deliver{
+   backgroud-color: #FFC107
+  }
+.orders-pending{
+   backgroud-color: #FFC107
+  }</style>
+</head>
+
+<body>
+<br>
+
+<div class="col-12 mt-3">
+  <div class="row">
+    <div class="col-3">
+        <div class="card text-center text-white mb-3 bg-primary" id="orders-pending">
+      <div class="card-header">
+        <h5 class="card-title">Total Orders</h5>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"></h3>
+      </div>
+    </div>
+    </div>
+     <div class="col-3">
+        <div class="card text-center text-white mb-3 bg-danger">
+      <div class="card-header">
+        <h5 class="card-title">Order Pending </h5>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"></h3>
+      </div>
+    </div>
+    </div>
+     <div class="col-3">
+         <div class="card text-center text-white mb-3 bg-warning" id="total_order">
+      <div class="card-header">
+        <h5 class="card-title">Order Delivered </h5>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"></h3>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+

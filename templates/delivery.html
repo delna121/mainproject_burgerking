@@ -1,0 +1,425 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+{% comment %} <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> {% endcomment %}
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> {% endcomment %}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{% static 'reg/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+<!-- Main css -->
+<link rel="stylesheet" href="{% static 'reg/css/style.css' %}">
+
+  </head>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+
+body{
+
+}
+
+.navbar{
+  {% comment %} font-family: 'Montserrat', sans-serif; {% endcomment %}
+  height: 85px;
+}
+
+.nav-item{
+  padding-left:30px;
+  font-size: 16px;
+}
+
+
+.carousel-item{
+    width: 100%;
+    height: 350px;
+}
+.carousel-item img{
+    height: 350px;
+    width: 100%;
+}
+
+.card-img-top {
+width: 100%;
+height: 30vh;
+object-fit: contain;
+}
+
+.menu{
+  font-family: 'Montserrat', sans-serif;
+  padding-left:40px;
+}
+
+
+
+{% comment %}******************************* categories boxes *************{% endcomment %}
+.column {
+  float: left;
+  width: 12%;
+  padding: 0px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card-cat {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+
+.footer{
+  bottom: 0;
+  background-color: #FFC107 ;
+  padding-top:10px;
+  width:100%;
+  color: black;
+
+}
+
+{% comment %} .footer {
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: red;
+   color: white;
+   text-align: center;
+} {% endcomment %}
+
+
+</style>
+
+{% load static %}
+<body>
+<!-- ******************************* NAVBAR ***************************************************** -->
+
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-warning" style="padding-left:40px;padding-right:40px;">
+  <a class="navbar-brand" href="{% url 'index' %}" style="max-width:6%; ">
+    <img src="{% static 'logo1.png' %}" class="img-fluid" style="border-radius:60%;">
+ </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto" style="padding-left:30px">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'index' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'index' %}">Contact</a>
+      </li>
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      <ul class="navbar-nav mr-auto">
+
+
+{% comment %} *****************  CHECKING AUTHENTICATION  ******************** {% endcomment %}
+
+      {% if user.is_authenticated %}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{user.username}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i>&nbsp Add Address</a>
+          <a class="dropdown-item" href="#"><i class='fas fa-shopping-bag' style='font-size:20px'></i>&nbsp Orders</a>
+          <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>&nbsp Change Password</a>
+          <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>&nbsp Logout</a>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link" href="{% url 'show_cart' %}"><span class="badge bg-danger"></span><i class="fa fa-shopping-cart" style="font-size:20px"></i> Cart</a>
+      </li>
+
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'register.html' %}">Register</a>
+      </li>
+      {% endif %}
+     </ul>
+    </form>
+  </div>
+</nav>
+
+ <div class="main">
+    <section class="signup">
+        {% if messages %}
+        {% for msg in messages %}
+         <h2>{{msg}}</h2>
+
+ {% endfor %}
+ {% endif %}
+  <script>
+    function validateform()
+              {
+                  var a=document.getElementById('fname').value.trim();
+                  var b=document.getElementById('lname').value.trim();
+                  var c=document.getElementById('email').value.trim();
+                  var d=document.getElementById('phn').value.trim();
+                  var h=document.getElementById('dist').value.trim();
+
+                  var e=document.getElementById('hname').value.trim();
+                  var f=document.getElementById('city').value.trim();
+                  var g=document.getElementById('pin').value.trim();
+
+
+
+                  if(a=="")
+                  {
+                      document.getElementById('fnme').style.display="block";
+                      document.getElementById('fnme').innerHTML="**Please Enter First Name";
+                      return false;
+                  }
+                  if(/[^a-zA-Z]/.test(a)){
+                      document.getElementById('fnme').style.display="block";
+                      document.getElementById('fnme').innerHTML="**Alphabets Only";
+                      return false;
+                  }
+                  else{
+                      document.getElementById('fnme').style.display="none";
+                  }
+                  if(b=="")
+                  {
+                      document.getElementById('lnme').style.display="block";
+                      document.getElementById('lnme').innerHTML="**Please Enter last Name";
+                      return false;
+                  }
+                  if(/[^a-zA-Z]/.test(b)){
+                      document.getElementById('lnme').style.display="block";
+                      document.getElementById('lnme').innerHTML="**Alphabets Only";
+                      return false;
+                  }
+                  else{
+                      document.getElementById('lnme').style.display="none";
+
+                  }
+                  if(c=="")
+                  {
+                      document.getElementById('eml').style.display="block";
+                      document.getElementById('eml').innerHTML="**Please Enter Email";
+                      return false;
+                  }
+                  if(c.indexOf('@')<=0){
+                      document.getElementById('eml').style.display="block";
+                      document.getElementById('eml').innerHTML="**Invalid  Email Address";
+                      return false;
+                  }
+                  if ((c.charAt(c.length-4)!='.') && (c.charAt(c.length-3)!='.')) {
+                      document.getElementById('eml').style.display="block";
+                      document.getElementById('eml').innerHTML="**Invalid  Email Address";
+                      return false;
+                  }
+                  else{
+                      document.getElementById('eml').style.display="none";
+
+                  }
+                  var expr = /^[6-9]\d{9}$/;
+                  if(d=="")
+                  {
+                      document.getElementById('ph').style.display = "block";
+
+                      document.getElementById('ph').innerHTML="**Please Enter  phone";
+                      return false;
+                  }
+                    if(d!="" && expr.test(d)==false){
+                     document.getElementById('ph').style.display= "block";
+                     document.getElementById('ph').innerHTML ="Invalid Phone number";
+                     return false;
+                         }
+                        else{
+                            document.getElementById('ph').style.display = "none";
+
+                         }
+
+                // if(i=="")
+                //   {
+                //       document.getElementById('itm').style.display="block";
+                //       document.getElementById('itm').innerHTML="**Please Enter Housename";
+                //       return false;
+                //   }
+                if(e=="")
+                  {
+                      document.getElementById('hnme').style.display="block";
+                      document.getElementById('hnme').innerHTML="**Please Enter Housename";
+                      return false;
+                  }
+                  else{
+                      document.getElementById('hnme').style.display="none";
+                  }
+                  if(f=="")
+                  {
+                      document.getElementById('cty').style.display="block";
+                      document.getElementById('cty').innerHTML="**Please Enter City";
+                      return false;
+                  }
+                  else{
+                      document.getElementById('cty').style.display="none";
+
+                  }
+                  var exprr = /^[1-9]\d{5}$/;
+
+                  if(g=="")
+                  {
+                      document.getElementById('pn').style.display="block";
+                      document.getElementById('pn').innerHTML="**Please Enter Pin";
+                      return false;
+                  }
+                  if(g!="" && exprr.test(g)==false){
+                     document.getElementById('pn').style.display= "block";
+                     document.getElementById('pn').innerHTML ="Invalid pin number";
+                     return false;
+                         }
+                  else{
+                      document.getElementById('pn').style.display="none";
+                      return true;
+                  }
+
+
+              }
+
+
+  </script>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Be a part of as!</h2>
+                        <form method="POST" action="{% url 'delivery_reg' %}" class="register-form" id="register-form" onsubmit="return validateform();">
+                            {% csrf_token %}
+
+
+
+                            <div class="form-group">
+                                <label for="name"></label>
+                                <input type="text" class="form-input" name="fname" id="fname" placeholder="First Name" class="form-control" title="Enter your first name" onKeyUp="return validateform()" onblur="return validateform()" autocomplete="off" >
+				                 <span id="fnme" style="color: red;"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="name"></label>
+                                <input type="text" name="lname" id="lname" class="form-input" placeholder="Last Name" title="Enter your last name" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+				                 <span id="lnme" style="color: red;"></span>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"></label>
+                                <input type="email" name="email" id="email" class="form-input" placeholder="Email"  title="Enter your email id" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="eml" style="color: red;"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass"></label>
+                                <input type="tel" name="phone" id="phn" class="form-input" placeholder="Phone Number" maxlength="10" title="Enter your phone number" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="ph" style="color: red;"></span>
+                            </div>
+
+
+<!--						<div class="form-group">-->
+<!--							&lt;!&ndash; <label for="re-pass"><i class="zmdi zmdi-city"></i></label> &ndash;&gt;-->
+<!--							<select class="form-control" name="district" id="dist" title="Select your district"  style="font-size:14px;width:400px;color:rgb(134, 128, 128);" >-->
+<!--							<option lass="input-text" value="">Select District</option>-->
+<!--							{% for i in district %}-->
+<!--							<option value="{{i.id}}">{{i.name}}</option>-->
+<!--							{% endfor %}-->
+<!--							</select>-->
+<!--							<span id="dist" style="color: red;"></span>-->
+							<!-- <h4 class="form-title">Items</h4> -->
+
+						</div>
+
+                            <div class="form-group">
+                                <label for="re-pass"></label>
+                                <input type="text" name="city" id="city" class="form-input" placeholder="Enter city" title="Enter your city" class="form-control"  onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="cty" style="color: red;"></span>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="re-pass"></label>
+                                <input type="tel" name="pin" id="pin" class="form-input" placeholder="Pin Number" maxlength="6" title="Enter your pin" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="pn" style="color: red;"></span>
+
+                            </div>
+							<div class="form-group">
+                                <label for="pass"></label>
+                                <input type="tel" name="aadhar" id="aadhar" class="form-input" placeholder="Enter Aadhar number" maxlength="12" title="Enter your aadhar number" class="form-control" >
+                                <span id="ph" style="color: red;"></span>
+                            </div>
+							<div class="form-row">
+								<input type="password" name="pass1" id="password" class="form-input" placeholder=" Password" title="Enter your password" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+								<span id="pass" style="color: red;"></span>
+							</div>
+							<div class="form-row">
+								<input type="password" name="pass2" id="cpassword" class="form-input" placeholder="Confirm Password" title="confirm your password" class="form-control" onKeyUp="return validateform()" onblur="return validateform()" style="margin-top:10px;">
+								<span id="cpass" style="color: red;"></span>
+							</div>
+
+
+
+
+                            <div class="form-group form-button">
+                                <input style="border: none;" type="submit" name="signup" id="signup" class="form-submit" value="Submit"/>
+                            </div>
+                    </div>

@@ -31,12 +31,17 @@ urlpatterns = [
     path('de_cart/<int:id>/', views.de_cart,name='de_cart'),
 
 
-                  # path('de_cart/',views.de_cart,name='de_cart'),
+# path('de_cart/',views.de_cart,name='de_cart'),
 
     path('review/', views.review, name='review'),
     path('checkout/', views.checkout.as_view(), name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
     path('order/',views.order,name='order'),
+
+    # delivery_Boy
+    path('delivery_reg/',views.delivery_reg,name='delivery_reg'),
+    path('delivery_log/',views.delivery_log,name='delivery_log'),
+    path('deliveryhome/',views.deliveryhome,name='deliveryhome'),
 
 
 

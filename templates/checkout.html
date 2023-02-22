@@ -51,7 +51,7 @@
 
         
         <div class="text-end">
-          <button  id="rzp-button1" type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold">Payment</button>
+          <button  id="rzp-button1" type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold" style="display:blocked">Payment</button>
         </div>
       </form>
     </div>
@@ -71,6 +71,24 @@
 <!--    }-->
 
 <!--</script>-->
+
+<script>
+varc= document.getElementById('btn').value;
+    if(c.checked == false)
+             {
+                 document.getElementById('rzp-button1').style.display="block";
+                 document.getElementById('rzp-button1').innerHTML="**Please Select Address";
+                 return false;
+             }
+             else{
+                 document.getElementById('rzp-button1').style.display="none";
+                  return true;
+             }
+</script>
+
+
+
+
 {% block payment-gateway %}
  <script>
 

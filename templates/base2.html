@@ -88,7 +88,6 @@ body{
     width: 100%;
 }
 
-
 .footer{
   bottom: 0;
 
@@ -96,8 +95,19 @@ body{
   padding-top:10px;
   width:100%;
   color: black;
-
 }
+
+  #logo{
+  }
+.total-order{
+   backgroud-color: #FFC107
+  }
+.orders-deliver{
+   backgroud-color: #FFC107
+  }
+.orders-pending{
+   backgroud-color: #FFC107
+  }
 
 
 </style>
@@ -137,14 +147,9 @@ body{
       <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       <ul class="navbar-nav mr-auto">
-
-
-{% comment %} CHECKING AUTHENTICATION  {% endcomment %}
-
-      {% if user.is_authenticated %}
-      <li class="nav-item dropdown">
+           <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{user.first_name}}
+          {{name}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Details</a>
@@ -152,133 +157,11 @@ body{
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>Logout</a>
        </li>
-        <li class="nav-item">
-        <a class="nav-link" href="{% url 'show_cart' %}"><span class="badge bg-danger">{{cart_count}}</span><i class="fa fa-shopping-cart" style="font-size:20px"></i> Cart
-        <span class="badge badge-info"></span></a>
-      </li>
-
-      {% else %}
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'login' %}">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'register.html' %}">Register</a>
-      </li>
-      {% endif %}
-     </ul>
+           </ul>
     </form>
   </div>
     </div>
 
 </nav>
-
-
-
-
-
 {% block body %}
-
-
 {% endblock body %}
-
-
- <footer class="footer">
-
-           <!-- Footer Elements -->
-           <div class="container">
-
-           <!-- Social buttons -->
-           {% comment %} <ul class="list-unstyled list-inline text-center">
-               <li class="list-inline-item">
-               <a href="#" class="btn-floating btn-fb mx-2">
-                   <i class="fab fa-facebook fa-2x" > </i>
-               </a>
-               </li>
-               <li class="list-inline-item">
-               <a href="https://www.instagram.com/" class="btn-floating btn-tw mx-2">
-                   <i class="fab fa-instagram fa-2x" > </i>
-               </a>
-               </li>
-               <li class="list-inline-item">
-               <a href='https://web.whatsapp.com/' class="btn-floating btn-gplus mx-2">
-                   <i class="fab fa-whatsapp fa-2x"> </i>
-               </a>
-               </li>
-               <li class="list-inline-item">
-               <a href="https://mail.google.com/" class="btn-floating btn-li mx-2">
-                   <i class="fab fa-google-plus fa-2x"> </i>
-               </a>
-               </li>
-           </ul> {% endcomment %}
-           <!-- Social buttons -->
-
-           </div>
-           <!-- Footer Elements -->
-
-           <!-- Copyright -->
-          <div class="footer-copyright text-center py-3">© 2023 Copyright: BurgerQueen version 2.0<br>
-           <a target='_blank' href="https://www.instagram.com/">Created by Delna</a>
-           </div>
-           <!-- Copyright -->
-
-
-         </footer>
-
-  {% comment %} <script>
-    $('.category').click(function (){
-      var id = $(this).attr("cid").toString();
-      console.log(id)
-      $.ajax({
-        type: 'GET' ,
-        url: "/category",
-        data:{
-          category_id:id,
-        },
-        dataType: 'json',
-
-        success:function(data)
-        {
-          console.log("success")
-          console.log(data.product)
-          //$("#siddhesh").html(data.product);
-
-          var data = JSON.parse(data.product);
-          $.each(data, function(i, itm){
-          // You can get each value in loop
-          //console.log(itm['selling_price']);
-
-          var subj = [itm.name];
-
-
-          console.log(subj);
-          var sid=""
-          //console.log(itm['selling_price']);
-          //console.log(itm['marked_price']);
-          for(var i=0; i< subj.length; i++){
-              //console.log(subj[i])
-              sid += subj[i]
-
-          }
-          console.log(sid)
-          document.getElementById("delna").innerHTML += "<h1>" + sid + "</h1>"
-
-
-
-
-
-      });
-
-
-
-
-
-        }
-      })
-    })
-
-  </script> {% endcomment %}
-
-
-
-      </body>
-    </html>

@@ -275,6 +275,40 @@ body{
   color: black;
 
 }
+<!--.container{-->
+<!-- position: relative;-->
+<!-- display: flex;-->
+<!-- justify-content: center;-->
+<!-- align-items: center;-->
+<!-- flex-wrap: wrap;-->
+<!--}-->
+<!--.container .box{-->
+<!-- position: relative;-->
+<!-- width: 20rem;-->
+<!-- height: 20rem;-->
+<!-- margin: 3rem;-->
+<!--}-->
+<!--.container .box:hover .imgbox{-->
+<!--  transform: translate(-1.5rem,-1.5rem);-->
+<!--}-->
+<!--.container .box:hover .content{-->
+<!--  transform: translate(3.5rem, 3.5rem)-->
+<!--}-->
+<!--.imgbox{-->
+<!--  position: absolute;-->
+<!--  top: 0;-->
+<!--  left: 0;-->
+<!--  width:100%;-->
+<!--  height:100%;-->
+<!--  z-index: 2;-->
+<!--  transition: all 0.5s ease-input;-->
+<!-- }-->
+<!-- .imgbox img{-->
+<!--   width: 20rem;-->
+<!--   height: 20rem;-->
+<!--   object-fit: cover;-->
+<!--   resize: both;-->
+<!-- }-->
 
 {% comment %} .footer {
    left: 0;
@@ -328,7 +362,7 @@ body{
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Add Address</a>
           <a class="dropdown-item" href="{% url 'order' %}"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Orders</a>
-          <a class="dropdown-item" href="{% url 'review' %}"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Review</a>
+          <a class="dropdown-item" href="{% url 'review' %}"><i class='fas fa-shopping-bag'id="#review" style='font-size:20px'></i> Review</a>
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>Logout</a>
         </div>
@@ -405,7 +439,31 @@ body{
 
 {% endfor %}
 
-
+<!--have a try on product-->
+<!--    <div class="container">-->
+<!--        {% for i in product %}-->
+<!--        <div class="box">-->
+<!--            <div class="imgbox">-->
+<!--             <img class="card-img-top" src="/media/{{i.product_image}}" alt="Card image cap">-->
+<!--        </div>-->
+<!--        <div class="content">-->
+<!--            <h4 class="card-title">{{i.name}}</h4>-->
+<!--            <h5>Price: <strike> {{i.marked_price}}</strike>  <b>{{i.selling_price}}</b></h5>-->
+<!--            {% if user.is_authenticated %}-->
+<!--               <form action="/add-to-cart">-->
+<!--                   <input type="hidden" name="prod_id" value={{i.id}}>-->
+<!--                   <button class="btn btn-secondary" type="submit">Add To Cart</button>-->
+<!--               </form>-->
+<!--            {% else %}-->
+<!--            <form action="/login">-->
+<!--                <input type="hidden" name="prod_id" value={{i.id}}>-->
+<!--                <button class="btn btn-warning" type="submit"> Add To Cart</button>-->
+<!--            </form>-->
+<!--            {% endif %}-->
+<!--        </div>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
 
 
 
@@ -423,7 +481,7 @@ body{
                             <div class="card-body">
                               <h4 class="card-title">{{i.name}}</h4>
                               <h5>Price: <strike> {{i.marked_price}}</strike>  <b>{{i.selling_price}}</b></h5>
-                              
+
 
                               {% if user.is_authenticated %}
                                  <form action="/add-to-cart">
@@ -449,7 +507,7 @@ body{
 </div>
 </div>
 
-<section class="reviews">
+<section class="reviews" id="review">
         <div class="reviews-title">
             <h3><strong>Reviews</strong></h3>
         </div>

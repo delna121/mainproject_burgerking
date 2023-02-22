@@ -1,3 +1,5 @@
+from hashlib import sha256
+
 from django.shortcuts import render, redirect
 from .models import *
 from django.http import HttpResponse, Http404, HttpResponseRedirect
@@ -135,31 +137,6 @@ def review(request):
     return render(request, 'mailbox-compose.html')
 
 
-
-#
-# class ProfileView(View):
-#     def get(self, request):
-#         form = CustomerProfileForm()
-#         return render(request, 'profile.html', {'form':form})
-#
-#     def post(self, request):
-#         form = CustomerProfileForm(request.POST)
-#         if form.is_valid():
-#             usr = request.user
-#             name = form.cleaned_data['name']
-#             phone=  form.cleaned_data['phone']
-#             address = form.cleaned_data['address']
-#             city = form.cleaned_data['city']
-#             state = form.cleaned_data['state']
-#             zipcode = form.cleaned_data['zipcode']
-#             reg = Customer(user=usr,name=name,phone=phone, address=address, city=city, state=state, zipcode=zipcode)
-#             reg.save()
-#             return redirect('address')
-#         return render(request, 'profile.html',{'form':form})
-
-
-
-
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -200,10 +177,7 @@ def add_to_cart(request):
         Cart(user=user, product=product).save()
         messages.success(request, "Added to cart Successfully")
     return redirect('index')
-    # Cart(user=user,product=product).save()
-    # # return redirect('/show_cart')
-    # messages.success(request,'product added successfuly!!')
-    # return redirect('index')
+
 
 
 def show_cart(request):
@@ -223,26 +197,6 @@ def show_cart(request):
             return render(request, 'addtocart.html', context)
         else:
             return render(request, 'emptycart.html')
-    #     if request.method == 'POST':
-    #         coupon = request.POST.get('coupon')
-    #         coupon_obj = Voucher.objects.filter(coupon_code = coupon)
-    #         if not coupon_obj.exist():
-    #             messages.warning(request,'Invalid Coupon')
-    #             print('invalis')
-    #             return HttpResponseRedirect(request.META.get('HTTP_REFER'))
-    #         if cart.coupon:
-    #             print('alrdy')
-    #             messages.warning(request, 'Coupon alrdy exists')
-    #             return HttpResponseRedirect(request.META.get('HTTP_REFER'))
-    #         cart.coupon = coupon_obj[0]
-    #         cart.save()
-    #         messages.success(request,'coupon applied')
-    #         return HttpResponseRedirect(request.META.get('HTTP_REFER'))
-    #
-    #
-    # return render(request,'addtocart.html')
-
-
 
 
 
@@ -289,21 +243,6 @@ def minuscart(request):
         }
         return JsonResponse(data)
 
-#
-# def de_cart(request):
-#     user = request.user
-#     product_id = request.GET.get('prod_id')
-#     product = Product.objects.get(id=product_id)
-#     product.delete()
-#     return redirect('/show_cart/')
-
-# def remove_ad(request):
-#     user = request.user
-#     address_id = request.GET.get('add_id')
-#     # print(product_id)
-#     product = Profile.objects.get(id=address_id)
-#     Profile(user=user, id=product).delete()
-#     return redirect('/address')
 def remove_ad(request, id):
     user = request.user
     cart = Profile.objects.filter(user_id=user)
@@ -346,9 +285,6 @@ class checkout(View):
             )
             payment.save()
          return render(request,'checkout.html',locals())
-         # return render(request, 'checkout.html',
-         #          {'address': address, 'cart': cart,'amount': razoramount, 'subtotal': subtotal, 'total_amount': totalamount,
-         #           'amount': amount, 'shipping_amount': shipping_amount})
 
 def payment_done(request):
     order_id= request.session['order_id']
@@ -379,5 +315,55 @@ def de_cart(request, id):
         # messages.info(request, "You don't have an active order")
         return redirect('show_cart')
 
+def delivery_reg(request):
+    if request.method == 'POST':
+        first_name= request.POST.get('fname')
+        last_name = request.POST.get('lname')
+        email= request.POST.get('email')
+        phone = request.POST.get('phone')
+        city = request.POST.get('city')
+        pin = request.POST.get('pin')
+        aadhar_card = request.POST.get('aadhar')
+        password= request.POST.get('pass1')
+        password2 = request.POST.get('pass2')
+        pass8 = sha256(password2.encode()).hexdigest()
 
+        if Delivery_login.objects.filter(user=email).exists():
+            messages.success(request,'Already exist email id')
+            return redirect(delivery_reg)
+        else:
+            log=Delivery_login(user=email,password=pass8)
+            log.save()
+            userid=Delivery_login(user=email)
+            reg=Delivery_reg(first_name=first_name,last_name=last_name,phone=phone,email=email,city=city,user_id=userid.user,pin=pin,aadhar_card=aadhar_card,password=pass8)
+            reg.save()
+            return redirect('delivery_log')
+    return render(request, 'delivery.html')
+
+def delivery_log(request):
+    request.session.flush()
+    if 'email' in request.session:
+        return redirect(deliveryhome)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        passwords = sha256(password.encode()).hexdigest()
+        delivery = Delivery_login.objects.filter(user=email,password=passwords,status=1)
+        if delivery:
+            delivery_detailes = Delivery_login.objects.get(user=email,password=passwords)
+            email= delivery_detailes.user
+            request.session['email'] = email
+            return redirect(deliveryhome)
+        else:
+            messages.success(request,"Invalid Credentials")
+            return redirect(delivery_log)
+    return render(request,'delivery_log.html')
+
+def deliveryhome(request):
+    if 'email' in  request.session:
+        email = request.session['email']
+        detailes= OrderPlaced.objects.all()
+        profile= Profile.objects.all()
+        return render(request,'deliveryhome.html',{'name':email,'detailes':detailes,'profile':profile})
+    return redirect(delivery_log)
 

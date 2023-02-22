@@ -1,0 +1,178 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+
+{% block body %}
+
+
+<link rel="stylesheet" href="{% static 'stylehome.css' %}">
+
+
+
+
+
+  <!-- Dashboard -->
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <div class="sidebar flex-c flex-sb">
+        <div class="brand">Delivery</div>
+        <div class="side-nav">
+          <div class="menu-item flex active">
+            <div class="icon">
+              <ion-icon name="grid"></ion-icon>
+            </div>
+
+            <p>Dashboard</p>
+          </div>
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="magnet-outline"></ion-icon>
+            </div>
+
+            <p>Orders</p>
+          </div>
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="storefront-outline"></ion-icon>
+            </div>
+
+            <p>Customers</p>
+          </div>
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="storefront-outline"></ion-icon>
+            </div>
+
+            <p>Order Pending</p>
+          </div>
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="heart-circle-outline"></ion-icon>
+            </div>
+
+            <p>Total Orders</p>
+          </div>
+
+          <div class="border"></div>
+
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="wallet-outline"></ion-icon>
+            </div>
+
+            <p>Wallet</p>
+          </div>
+
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="settings-outline"></ion-icon>
+            </div>
+
+            <p>Settings</p>
+          </div>
+        </div>
+
+        <div class="log-out">
+          <div class="menu-item flex">
+            <div class="icon">
+              <ion-icon name="log-out-outline"></ion-icon>
+            </div>
+
+            <p>Logout</p>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+<script>
+ const dark = document.querySelector(".dark");
+const light = document.querySelector(".light");
+
+dark.addEventListener("click", function () {
+  document.querySelector("body").classList.add("darkMode");
+  light.classList.remove("active");
+  dark.classList.add("active");
+});
+
+light.addEventListener("click", function () {
+  document.querySelector("body").classList.remove("darkMode");
+  dark.classList.remove("active");
+  light.classList.add("active");
+});
+
+</script>
+
+
+<br>
+
+    <div class="col-12">
+      <div class="row">
+
+        {% include 'status.html' %}
+
+        </div>
+      <div class="row">
+
+         <div class="col-8 mr-4">
+         <h5>Customers</h5>
+          <br>
+          <div class="card card-body">
+            <table class="table table-xl">
+              <tr>
+                <th>Customer</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+              </tr>
+              {% for i in profile %}
+              <tr>
+              <td> {{i.user}} </td>
+                <td> {{i.phone}} </td>
+                <td> {{i.address}} </td>
+              </tr>
+              {% endfor %}
+            </table>
+        </div>
+        </div>
+      </div>
+
+        <div class="col-8 mr-4">
+         <h5>Last 5 Orders</h5>
+          <br>
+          <div class="card card-body">
+            <table class="table table-xl">
+              <tr>
+                <th>Customer</th>
+
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Date of Order</th>
+                <th>Status</th>
+
+
+
+                <th>Update</th>
+              </tr>
+              {% for i in detailes %}
+              <tr>
+              <td> {{i.user}} </td>
+              <td> {{i.product}} </td>
+                <td> {{i.quantity}} </td>
+                <td> {{i.ordered_date}} </td>
+                <td> {{i.status}} </td>
+                <td> <a href="">Update</a> </td>
+<!--                <td> {{i.phone}} </td>-->
+              </tr>
+
+
+
+              {% endfor %}
+            </table>
+        </div>
+        </div>
+      </div>
+    </div>
+{% endblock body %}

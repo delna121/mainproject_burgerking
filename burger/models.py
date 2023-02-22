@@ -55,7 +55,13 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+STATUS_CHOICES = (
+    ('Rejected','Rejected'),
+    ('Accepted','Accepted'),
+    ('Offline Verification processing','Offline Verification processing'),
+    ('Pending','Pending'),
 
+)
 
 
 class Profile(models.Model):
@@ -122,13 +128,19 @@ class Payment(models.Model):
     def __str__(self):
         return self.razorpay_order_id
 
+class Delivery_login(models.Model):
+    user= models.EmailField(max_length=200,primary_key=True,unique=True,default=1)
+    password= models.CharField(max_length=200)
+    status =models.BooleanField(max_length=100,default=False)
+
 class OrderPlaced(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default='Pending')
-    payment = models.ForeignKey(Payment,on_delete=models.CASCADE,default="")
+    payment = models.ForeignKey(Payment,on_delete=models.CASCADE,default="Pending")
+
     @property
     def total_cost(self):
         return self.quantity * self.product.selling_price
@@ -176,4 +188,17 @@ class Cart(models.Model):
 
 
 
+class Delivery_reg(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    email =models.CharField(max_length=200)
+    phone = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+    pin = models.CharField(max_length=200)
+    user=models.ForeignKey(Delivery_login,on_delete=models.SET_NULL,blank=True,null=True)
+    aadhar_card = models.CharField(max_length=200)
+    password = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = "Delivery_Boy Details"
 

@@ -96,6 +96,30 @@ class ProductModelAdmin(admin.ModelAdmin):
 admin.site.register(Product,ProductModelAdmin)
 
 
+class Delivery_regAdmin(admin.ModelAdmin):
+    list_display=['first_name']
+    exclude=('password',)
+    def has_add_permission(self, request, obj=None):
+        return False
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+    verbose_name_plural = "Delivery_boy Details"
+admin.site.register(Delivery_reg,Delivery_regAdmin)
+
+
+class Delivery_logAdmin(admin.ModelAdmin):
+    list_display=['user']
+    exclude=('password',)
+    def has_add_permission(self, request, obj=None):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return False
+    verbose_name_plural = "Delivery_Boy Details"
+admin.site.register(Delivery_login,Delivery_logAdmin)
+
 
 
 
