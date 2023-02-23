@@ -364,6 +364,20 @@ def deliveryhome(request):
         email = request.session['email']
         detailes= OrderPlaced.objects.all()
         profile= Profile.objects.all()
-        return render(request,'deliveryhome.html',{'name':email,'detailes':detailes,'profile':profile})
+        total_order = OrderPlaced.objects.count()
+        print(total_order)
+        # count = MyModel.objects.filter(status='active').count()
+        delivered = OrderPlaced.objects.filter(status='delivered').count()
+        print(delivered)
+        pending = OrderPlaced.objects.filter(status='pending').count()
+        print(pending)
+        return render(request,'deliveryhome.html',{'name':email,'detailes':detailes,'profile':profile,'total_orders':total_order,'delivered':delivered,'pending':pending})
     return redirect(delivery_log)
 
+def customerdetailes(request,pk_test):
+    if 'email' in request.session:
+        email = request.session['email']
+    customer =Profile.objects.filter(user_id=pk_test)
+    order=OrderPlaced.objects.filter(user_id=pk_test)
+    total_order=OrderPlaced.objects.filter(user_id=pk_test).count()
+    return render(request,'customerdetailes.html',{'name':email,'customer':customer,'order':order,'total_order':total_order})

@@ -42,6 +42,7 @@ urlpatterns = [
     path('delivery_reg/',views.delivery_reg,name='delivery_reg'),
     path('delivery_log/',views.delivery_log,name='delivery_log'),
     path('deliveryhome/',views.deliveryhome,name='deliveryhome'),
+    path('customerdetailes/<str:pk_test>/',views.customerdetailes,name='customerdetailes'),
 
 
 
