@@ -131,6 +131,8 @@ class DealsAdmin(admin.ModelAdmin):
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['user','title','review']
 
-
+@admin.register(Delivery_assign)
+class Delivery_assignAdmin(admin.ModelAdmin):
+    list_display = ['delivery_boy_id','user_id']
 
 

@@ -202,3 +202,6 @@ class Delivery_reg(models.Model):
     class Meta:
         verbose_name_plural = "Delivery_Boy Details"
 
+class Delivery_assign(models.Model):
+    user =models.ForeignKey(OrderPlaced,on_delete=models.SET_NULL,blank=True,null=True)
+    delivery_boy=models.ForeignKey(Delivery_login,on_delete=models.CASCADE,null=True)

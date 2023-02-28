@@ -163,7 +163,7 @@ light.addEventListener("click", function () {
                 <td> {{i.quantity}} </td>
                 <td> {{i.ordered_date}} </td>
                 <td> {{i.status}} </td>
-                <td> <a class="btn btn-sm btn-info" href="">Update</a> </td>
+                <td> <a class="btn btn-sm btn-info" href="{% url 'update_data' i.id %}">Update</a> </td>
 <!--                <td> {{i.phone}} </td>-->
               </tr>
 

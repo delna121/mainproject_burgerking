@@ -43,6 +43,7 @@ urlpatterns = [
     path('delivery_log/',views.delivery_log,name='delivery_log'),
     path('deliveryhome/',views.deliveryhome,name='deliveryhome'),
     path('customerdetailes/<str:pk_test>/',views.customerdetailes,name='customerdetailes'),
+    path('update_data/<str:pk>/',views.update_data,name='update_data'),
 
 
 

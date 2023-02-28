@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
+from .models import OrderPlaced
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField()
@@ -29,3 +30,7 @@ class CustomerProfileForm(forms.ModelForm):
             'state': forms.TextInput(attrs={'class': 'form-control'}),
             'zipcode': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = OrderPlaced
+        fields = ['user','product','quantity','status']

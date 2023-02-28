@@ -5,7 +5,8 @@ from .models import *
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 # from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User,auth
-from .forms import UserRegistrationForm,CustomerProfileForm
+from .forms import UserRegistrationForm,CustomerProfileForm,OrderForm
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import View
@@ -381,3 +382,15 @@ def customerdetailes(request,pk_test):
     order=OrderPlaced.objects.filter(user_id=pk_test)
     total_order=OrderPlaced.objects.filter(user_id=pk_test).count()
     return render(request,'customerdetailes.html',{'name':email,'customer':customer,'order':order,'total_order':total_order})
+
+def update_data(request,pk):
+    if 'email' in request.session:
+        email = request.session['email']
+        order = OrderPlaced.objects.get(id=pk)
+        form = OrderForm(instance=order)
+        if request.method == 'POST':
+            form =OrderForm(request.POST,instance=order)
+            if form.is_valid():
+                form.save()
+                return redirect(deliveryhome)
+    return render(request,'update_data.html',{'name':email,'form':form})

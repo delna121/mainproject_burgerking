@@ -1,0 +1,127 @@
+@import "https://unpkg.com/open-props"
+
+$black-3a: hsla(0, 0%, 0%, 0.3)
+$white: hsl(0, 0%, 100%)
+
+*,
+*::before,
+*::after
+  // position
+  margin: 0
+
+  // size
+  padding: 0
+  box:
+    shadow: 0
+
+select,
+options,
+input
+  // typography
+  font: inherit
+
+.page
+  // flex
+  display: flex
+  align:
+    items: center
+  justify:
+    content: center
+
+  // size
+  padding: var(--size-3)
+  min:
+    height: 100vh
+
+  // typography
+  font:
+    family: var(--font-sans)
+
+.form
+  $form_pg: var(--size-4)
+
+  // color
+  color: var(--gray-0)
+  background:
+    color: var(--gray-9)
+
+  // grid
+  display: grid
+  gap: var(--size-2)
+
+  // size
+  width: 100%
+  border:
+    radius: var(--radius-3)
+  padding:
+    block: $form_pg
+  max:
+    width: 20em
+
+  // visual
+  overflow: hidden
+  box:
+    shadow: 0 0 1.3em $black-3a
+
+  &__row
+    // grid
+    display: grid
+    gap: var(--size-2)
+
+    // position
+    margin:
+      inline: $form_pg
+
+  &__label
+    // typography
+    letter:
+      spacing: 0.05em
+
+  &__select
+    // color
+    color: var(--gray-9)
+    background:
+      color: var(--gray-2)
+
+    // size
+    padding: var(--size-1) var(--size-2)
+    border: 2px solid var(--gray-8)
+      radius: var(--radius-1)
+
+    // typography
+    font:
+      size: 0.9rem
+
+    &:hover
+      // color
+      background:
+        color: var(--gray-4)
+
+    &:focus
+      // color
+      background:
+        color: $white
+
+  &__btn
+    //position
+    margin:
+      top: var(--size-2)
+      inline: auto
+
+.primary-btn
+  // color
+  color: var(--gray-0)
+  background:
+    color: var(--primary-btn_bd-cr, var(--green-7))
+
+  // size
+  padding: var(--size-2) var(--size-3)
+  border: 0
+    radius: var(--radius-2)
+
+  // states
+  cursor: pointer
+
+  transition: 180ms ease-in-out
+  &:hover
+    --primary-btn_bd-cr: var(--green-9)

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load static %}
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -16,6 +16,7 @@
 
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'updatecustomer.css' %}">
 <style>
 
 /* BASIC */
@@ -297,76 +298,96 @@ input[type=text]:placeholder {
         },4000)
 </script>
 
-    <h5><B>LOGIN FORM</B></h5>
+    <h5><B>Update Data</B></h5>
     <!-- Login Form -->
-    <form method="post" onsubmit="return validateform();">
+    <form method="post" action="" >
       {% csrf_token %}
-      <input type="text" id="email" class="fadeIn second" name="email" placeholder="Email"  onKeyUp="return validateform()" onblur="return validateform()">
-      <span id="eml" style="color: red;"></span>
-      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" onKeyUp="return validateform()" onblur="return validateform()">
-      <span id="pass" style="color: red;"></span>
+      {{ form }}
+        <input type="submit" name="submit">
 
-      <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
 
     <!-- Remind Passowrd -->
-    <div id="formFooter">
-      <a class="underlineHover" href="{% url 'password_reset' %}">Forgot Password?</a>
-      <a class="underlineHover" href="{% url 'delivery_reg' %}">Create an Account</a>
+<script>
+    console.clear();
 
-    </div>
+// some data
+const formData = {
+  frontEnd: {
+    html: ["Links", "Images", "Tables", "Lists"],
+    css: ["Borders", "Margins", "Backgrounds", "Floats"],
+    javaScript: ["Variables", "Operators", "Functions", "Conditions"]
+  },
+  backEnd: {
+    php: ["Variables", "Strings", "Arrays"],
+    sql: ["SELECT", "UPDATE", "DELETE"]
+  }
+};
+
+window.onload = function () {
+  const form = document.getElementById("form_1");
+  const fSubject = form.elements["subject"];
+  const fTopic = form.elements["topic"];
+  const fChapter = form.elements["chapter"];
+  const fBtn = form.elements["formBtn"];
+
+  let isAllOptionsSelected = false;
+
+  // set subjects in a form
+  for (const d in formData) {
+    fSubject.options[fSubject.options.length] = new Option(d, d);
+  }
+
+  // when a 'change' event occured
+  fSubject.onchange = function () {
+    // empty data
+    fTopic.length = 1;
+    fChapter.length = 1;
+
+    // set data
+    for (const d in formData[this.value]) {
+      fTopic.options[fTopic.options.length] = new Option(d, d);
+    }
+  };
+
+  // when a 'change' event occured
+  fTopic.onchange = function () {
+    // empty data
+    fChapter.length = 1;
+
+    // set data
+    // ...get chapters from a 'database'
+    var chapters = formData[fSubject.value][this.value];
+
+    // ...for each chapter create an option el(txt, val)
+    for (var c = 0; c < chapters.length; c++) {
+      fChapter.options[fChapter.options.length] = new Option(
+        chapters[c],
+        chapters[c]
+      );
+    }
+
+    // allow to send a data
+    isAllOptionsSelected = true;
+  };
+
+  // when a 'click' event occured
+  fBtn.onclick = function () {
+    // check if it possible to send
+    // ...send if true
+    if (isAllOptionsSelected) sendData("Sent!");
+  };
+
+  // send the data
+  function sendData(d) {
+    alert(d);
+  }
+};
+
+</script>
 
   </div>
 </div>
 
-<script>
-  function validateform()
-            {
-                var a=document.getElementById('email').value.trim();
-                var d=document.getElementById('password').value.trim();
 
-				        var passpatern=/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
-
-
-				if(a=="")
-                {
-					document.getElementById('eml').style.display="block";
-                    document.getElementById('eml').innerHTML="**Please Enter Email";
-                    return false;
-                }
-                if(a.indexOf('@')<=0){
-					document.getElementById('eml').style.display="block";
-                    document.getElementById('eml').innerHTML="**Invalid  Email Address";
-                    return false;
-                }
-				if ((a.charAt(a.length-4)!='.') && (a.charAt(a.length-3)!='.')) {
-					document.getElementById('eml').style.display="block";
-                    document.getElementById('eml').innerHTML="**Invalid  Email Address";
-                    return false;
-                }
-          else{
-            document.getElementById('eml').style.display="none";
-
-          }
-
-        //   if(d=="")
-        //         {
-		// 			document.getElementById('pass').style.display="block";
-        //             document.getElementById('pass').innerHTML="**please enter Password";
-        //             return false;
-        //         }
-		// 		if (!d.match(passpatern))
-        //             {
-        //                 document.getElementById('pass').style.display="block";
-        //                 document.getElementById('pass').innerHTML="** capital | small | number | minimum 8 character";
-        //                 return false;
-        //             }
-		// 		else{
-		// 			document.getElementById('pass').style.display="none";
-        //   return true;
-		// 		}
-
-      }
-
-</script>
 {% endblock body %}
