@@ -1,7 +1,9 @@
-from django.db import models
+import datetime
 
+
+from django.db import models
+from django.utils.dateparse import parse_datetime
 from django.contrib.auth.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.html import mark_safe
 
 STATE_CHOICES = (
@@ -100,6 +102,7 @@ class Product(models.Model):
     product_image = models.ImageField(upload_to='media')
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
+    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -127,11 +130,20 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.razorpay_order_id
+class Wishlist(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
 
 class Delivery_login(models.Model):
     user= models.EmailField(max_length=200,primary_key=True,unique=True,default=1)
     password= models.CharField(max_length=200)
     status =models.BooleanField(max_length=100,default=False)
+
+    def __str__(self):
+        return self.user
+
+
+
 
 class OrderPlaced(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -140,6 +152,11 @@ class OrderPlaced(models.Model):
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default='Pending')
     payment = models.ForeignKey(Payment,on_delete=models.CASCADE,default="Pending")
+    delivery_boy = models.ForeignKey(Delivery_login, on_delete=models.CASCADE, null=True, blank=True)
+    is_assigned=models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.product.name} ({self.quantity}) - {self.delivery_boy.user}'
 
     @property
     def total_cost(self):
@@ -159,6 +176,7 @@ class Reviews(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, blank=True)
     review = models.CharField(max_length=500, blank=True)
+    image = models.ImageField(upload_to='media', null=True, blank=True)
 
 
     def __str__(self):
@@ -173,8 +191,27 @@ class Voucher(models.Model):
     def __str__(self):
         return str(self.coupon_code)
 
+import datetime
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount = models.IntegerField()
+    valid_from = models.DateTimeField(default=datetime.datetime.now)
+    valid_to = models.DateTimeField(default=datetime.datetime.now() + datetime.timedelta(days=30))
+    is_expired= models.BooleanField(default=False)
+    minimum_amt = models.IntegerField(default=500)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+
+
 class Cart(models.Model):
-    coupon =models.ForeignKey(Voucher, on_delete=models.SET_NULL,null=True,blank=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL,null=True,blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
@@ -202,6 +239,12 @@ class Delivery_reg(models.Model):
     class Meta:
         verbose_name_plural = "Delivery_Boy Details"
 
-class Delivery_assign(models.Model):
-    user =models.ForeignKey(OrderPlaced,on_delete=models.SET_NULL,blank=True,null=True)
-    delivery_boy=models.ForeignKey(Delivery_login,on_delete=models.CASCADE,null=True)
+
+class ReviewData(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100, blank=True)
+    review = models.CharField(max_length=500, blank=True)
+    image = models.ImageField(upload_to='media', null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user)

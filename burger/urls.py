@@ -16,27 +16,27 @@ urlpatterns = [
 
     path('change_password/',views.change_password,name='change_password'),
     path('login/', views.login, name='login'),
-    # path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name ='logout.html'), name='logout'),
-    # path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
-    # path('profile/', views.ProfileView.as_view(), name='profile'),
+
     path('profile/', views.profile,name='profile'),
+    path('filter/',views.filter,name='filter'),
     path('address/', views.address, name='address'),
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
+
+    path('remove_coupon/',views.remove_coupon,name='remove_coupon'),
     path('show_cart/', views.show_cart, name='show_cart'),
-    path('emptycart/', views.show_cart, name='emptycart'),
+
     path('pluscart/', views.pluscart),
     path('minuscart/', views.minuscart),
     path('remove_ad/<int:id>', views.remove_ad,name='remove_ad'),
     path('de_cart/<int:id>/', views.de_cart,name='de_cart'),
+    path('apply_coupon/',views.apply_coupon,name='apply_coupon'),
 
-
-# path('de_cart/',views.de_cart,name='de_cart'),
-
-    path('review/', views.review, name='review'),
+    path('reviewdata/', views.reviewdata, name='reviewdata'),
     path('checkout/', views.checkout.as_view(), name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
-    path('order/',views.order,name='order'),
+
+    path('orderdetailes/',views.order,name='order'),
 
     # delivery_Boy
     path('delivery_reg/',views.delivery_reg,name='delivery_reg'),

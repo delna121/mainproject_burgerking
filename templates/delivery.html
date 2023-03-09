@@ -19,10 +19,10 @@
                   var c=document.getElementById('email').value.trim();
                   var d=document.getElementById('phn').value.trim();
                   var h=document.getElementById('dist').value.trim();
-
-                  var e=document.getElementById('hname').value.trim();
-                  var f=document.getElementById('city').value.trim();
+                  var aa=document.getElementById('aadhar').value.trim();
                   var g=document.getElementById('pin').value.trim();
+                  var p1=document.getElementById('password').value.trim();
+                  var p2=document.getElementById('cpassword').value.trim();
 
 
 
@@ -93,29 +93,15 @@
 
                          }
 
-                // if(i=="")
-                //   {
-                //       document.getElementById('itm').style.display="block";
-                //       document.getElementById('itm').innerHTML="**Please Enter Housename";
-                //       return false;
-                //   }
-                if(e=="")
+
+                  if(h=="")
                   {
-                      document.getElementById('hnme').style.display="block";
-                      document.getElementById('hnme').innerHTML="**Please Enter Housename";
+                      document.getElementById('dst').style.display="block";
+                      document.getElementById('dst').innerHTML="**Please Enter District";
                       return false;
                   }
                   else{
-                      document.getElementById('hnme').style.display="none";
-                  }
-                  if(f=="")
-                  {
-                      document.getElementById('cty').style.display="block";
-                      document.getElementById('cty').innerHTML="**Please Enter City";
-                      return false;
-                  }
-                  else{
-                      document.getElementById('cty').style.display="none";
+                      document.getElementById('dst').style.display="none";
 
                   }
                   var exprr = /^[1-9]\d{5}$/;
@@ -133,9 +119,54 @@
                          }
                   else{
                       document.getElementById('pn').style.display="none";
-                      return true;
                   }
+                   if(aa=="")
+                  {
+                      document.getElementById('ad').style.display="block";
+                      document.getElementById('ad').innerHTML="**Please Enter Adhar";
+                      return false;
+                  }
+                  var addr = /^[1-9]\d{15}$/;
 
+                  if(addr.test(aa)==false){
+                     document.getElementById('ad').style.display= "block";
+                     document.getElementById('ad').innerHTML ="Invalid Adhar number";
+                     return false;
+                         }
+                      else{
+                          document.getElementById('ad').style.display="none";
+                      }
+                     var pass_pattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+
+                     if(p1==""){
+                      document.getElementById('pass').style.display="block";
+                      document.getElementById('pass').innerHTML="**Please Enter Password";
+                      return false;
+                    }
+                    if(pass_pattern.test(p1)==false){
+
+                    document.getElementById('pass').style.display="block";
+                      document.getElementById('pass').innerHTML="**Please Follow Password Format";
+                      return false;
+
+                    }else{
+                     document.getElementById('pass').style.display="none";
+                          }
+                          if(p2==""){
+                      document.getElementById('cpass').style.display="block";
+                      document.getElementById('cpass').innerHTML="**Please Enter Confirm Password";
+                      return false;
+                    }
+                    if(p1 != p2 ){
+
+                    document.getElementById('cpass').style.display="block";
+                      document.getElementById('cpass').innerHTML="*Incorrect Password";
+                      return false;
+
+                    }else{
+                     document.getElementById('cpass').style.display="none";
+                          return true;
+                          }
 
               }
 
@@ -179,23 +210,11 @@
                             </div>
 
 
-<!--						<div class="form-group">-->
-<!--							&lt;!&ndash; <label for="re-pass"><i class="zmdi zmdi-city"></i></label> &ndash;&gt;-->
-<!--							<select class="form-control" name="district" id="dist" title="Select your district"  style="font-size:14px;width:400px;color:rgb(134, 128, 128);" >-->
-<!--							<option lass="input-text" value="">Select District</option>-->
-<!--							{% for i in district %}-->
-<!--							<option value="{{i.id}}">{{i.name}}</option>-->
-<!--							{% endfor %}-->
-<!--							</select>-->
-<!--							<span id="dist" style="color: red;"></span>-->
-							<!-- <h4 class="form-title">Items</h4> -->
-
-						</div>
 
                             <div class="form-group">
                                 <label for="re-pass"></label>
-                                <input type="text" name="city" id="city" class="form-input" placeholder="Enter city" title="Enter your city" class="form-control"  onKeyUp="return validateform()" onblur="return validateform()">
-                                <span id="cty" style="color: red;"></span>
+                                <input type="text" name="city" id="dist" class="form-input" placeholder="Enter District" title="Enter your city" class="form-control"  onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="dst" style="color: red;"></span>
 
                             </div>
 
@@ -207,14 +226,14 @@
                             </div>
 							<div class="form-group">
                                 <label for="pass"></label>
-                                <input type="tel" name="aadhar" id="aadhar" class="form-input" placeholder="Enter Aadhar number" maxlength="12" title="Enter your aadhar number" class="form-control" >
-                                <span id="ph" style="color: red;"></span>
+                                <input type="tel" name="aadhar" id="aadhar" class="form-input" placeholder="Enter Aadhar number" maxlength="16" title="Enter your aadhar number" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
+                                <span id="ad" style="color: red;"></span>
                             </div>
-							<div class="form-row">
+							<div class="form-group">
 								<input type="password" name="pass1" id="password" class="form-input" placeholder=" Password" title="Enter your password" class="form-control" onKeyUp="return validateform()" onblur="return validateform()">
 								<span id="pass" style="color: red;"></span>
 							</div>
-							<div class="form-row">
+							<div class="form-group">
 								<input type="password" name="pass2" id="cpassword" class="form-input" placeholder="Confirm Password" title="confirm your password" class="form-control" onKeyUp="return validateform()" onblur="return validateform()" style="margin-top:10px;">
 								<span id="cpass" style="color: red;"></span>
 							</div>

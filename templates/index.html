@@ -10,6 +10,7 @@
 
     <!-- Bootstrap CSS -->
 
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-qv7VJwek/D1mKj3qJG+RW7O4CTYJjKs4biQ2QeO7+oK8pE3TqfH1yBwS+jRUIKjQCG1s9s4YTR4P4urx8b66Iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
      <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -24,6 +25,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 
 
@@ -360,8 +363,10 @@ body{
           {{user.username}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'filter' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Filter</a>
           <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Add Address</a>
           <a class="dropdown-item" href="{% url 'order' %}"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Orders</a>
+            <a class="dropdown-item" href="#"><i class='fas fa-heart' style='font-size:20px'></i> Wishlist</a>
           <a class="dropdown-item" href="{% url 'review' %}"><i class='fas fa-shopping-bag'id="#review" style='font-size:20px'></i> Review</a>
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}"><i class='fa fa-sign-out' style='font-size:20px'></i>Logout</a>
@@ -371,6 +376,7 @@ body{
         <a class="nav-link" href="{% url 'show_cart' %}"><span class="badge bg-danger">{{cart_count}}</span><i class="fa fa-shopping-cart" style="font-size:20px"></i> Cart
         <span class="badge badge-info"></span></a>
       </li>
+
 
       {% else %}
       <li class="nav-item">
@@ -390,7 +396,17 @@ body{
 
 {% block body %}
 
+<!-- For Alert Message -->
 {% include 'alert.html' %}
+
+<script>
+	setTimeout(function(){
+	  if ($('#msg').length > 0){
+		$('#msg').remove();
+		}
+	  },4000)
+
+</script>
 
 <link rel="stylesheet" href="{% static 'banner.css' %}">
       <div class="banner">
@@ -426,18 +442,32 @@ body{
 
 
 
-
+<br>
 <div class="row col-12">
-{% for c in categories %}
-    <div class="card m-1" style="width:157px; padding-left:;">
-	<div class="card-block"> 
-		<a href="/category/{{c.pk}}"><img class="card-img-top" src="/media/{{c.category_image}}" style="height:120px"></a>
-      <div class="card text-center"><b><a href="/category/{{c.pk}}" class="category btn">{{c.title}}</a></b></div>
-	</div> 
+
+    <div class="container" style="height: 150px; overflow-x: auto;">
+    <div class="row">
+        {% for c in categories %}
+        <div class="col-sm-3">
+            <div class="card m-1">
+                <div class="card-block">
+                    <a href="/category/{{c.pk}}">
+                        <img class="card-img-top" src="/media/{{c.category_image}}" style="height:120px">
+                    </a>
+                    <div class="card text-center">
+                        <b><a href="/category/{{c.pk}}" class="category btn">{{c.title}}</a></b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+    <br>
 
 
-{% endfor %}
+
+
 
 <!--have a try on product-->
 <!--    <div class="container">-->
@@ -471,6 +501,7 @@ body{
 
 {% comment %} *********************** PRODUCTS  ***************************************** {% endcomment %}
 <div id="product" class="container-fluid m-0">
+    <br>
         <div class="col-md-12">
             <div class="row mt-2 ">
                 <div class="col-sm-12 m-0">
@@ -494,8 +525,7 @@ body{
                                   <button class="btn btn-warning" type="submit"> Add To Cart</button>
                               </form>
                               {% endif %}
-
-
+                                <br>
 
                             </div>
                           </div>
@@ -704,14 +734,19 @@ body{
 
 
       });
-
-
-
-
-
         }
       })
     })
+
+function toggle_wishlist(product_id) {
+    $.get('/toggle_wishlist/', {product_id: product_id}, function(data) {
+        if (data.created) {
+            $('#wishlist-' + product_id).addClass('filled-heart');
+        } else {
+            $('#wishlist-' + product_id).removeClass('filled-heart');
+        }
+    });
+}
 
   </script>
   </body>

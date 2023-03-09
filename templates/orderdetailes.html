@@ -2,31 +2,69 @@
 {% load static %}
 {% block body %}
 
-<div class="container my-5">
-    <div class="row">
-        <h3>Helloo <span class="text-capitalize"> {{request.user}}</span> ...Here is your Orders!!</h3>
-        <div class="col-sm-2 border-end">
-            <ul class="list-unstyled">
-                <li class="d-grid"><a href="{% url 'index' %}" class="btn btn-primary">Continue Shoping</a> </li>
-            </ul>
-        </div>
+<!-- For Alert Message -->
 
-        <div class="col-sm-9 offset-sm-1">
-            {% for op in order_placed %}
-            <div class="row">
-                <div class="col-sm-2">
-                    <img src="{{op.product.product_image.url}}" class="img-fluid" height="100" width="100"/>
-                </div>
-                <div class="col-sm-7">
-                    <p>Product : {{op.product.name}}</p>
-                    <p>Quantity : {{op.quantity}}</p>
-                    <p>Price : {{op.total_cost}}</p>
-                    <p>Delivered By : {{op.delivery_boy}}</p>
-                    <p>Date: {{op.ordered_date}}</p>
-                </div>
-                <br>
-                <hr>
-                <div class="col-sm-3">
+
+<script>
+	setTimeout(function(){
+	  if ($('#msg').length > 0){
+		$('#msg').remove();
+		}
+	  },4000)
+
+</script>
+
+<div class="container my-4">
+ <div class="row">
+  <div class="col-sm-8">
+  <div class="card">
+   <div class="card-body">
+    <h3>Here's your orders!!</h3>
+    <hr>
+
+
+    {% for op in order_placed %}
+
+    <div class="row">
+     <div class="col-sm-3 text-center align-self-center"><img src = "{{op.product.product_image.url}}" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"> </div>
+     <div class="col-sm-9">
+      <div>
+       <h5>{{op.product.name}}</h5>
+       <div class="my-3">
+        <label>Quantity:</label>
+
+          <span>{{op.quantity}}</span>
+
+       </div>
+          <div class="my-3">
+        <label>Price:</label>
+
+          <span>{{op.total_cost}}</span>
+
+       </div>
+           <div class="my-3">
+        <label>Delivered By:</label>
+
+          <span>{{op.delivery_boy}}</span>
+
+       </div>
+          <div class="my-3">
+        <label>Date on:</label>
+
+          <span>{{op.ordered_date}}</span>
+
+       </div>
+      </div>
+
+       <div class="d-flex justify-content-between">
+        <a href="#" class="btn btn-sm btn-secondary mr-3" name="prod_id" pid="{{cart.product.id}}">Remove item </a>
+              <br>
+        <p class="mb-0"><span><strong>Rate Us</strong></span></p>
+
+       </div>
+         <br>
+
+           <div>
                     <p>Order status : {{op.status}}</p>
                     {% if op.status == 'Accepted' %}
                     <div class="progress">
@@ -54,14 +92,15 @@
                         <div class="progress-bar bg-danger" role="progressbar"style="width: 100%" aria-valuenow="100" ria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     {% endif %}
-                </div>
-
-                </div>
-            {% endfor %}
-            </div>
-
-        </div>
+      </div>
+     </div>
     </div>
+    <hr>
+    {% endfor %}
 
+   </div>
+      </div>
+            </div>
+ </div>
 </div>
 {% endblock body %}

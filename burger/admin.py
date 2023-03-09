@@ -12,7 +12,7 @@ from .models import *
 # admin.site.unregister(Group)
 
 admin.site.register(Cart)
-admin.site.register(Voucher)
+admin.site.register(Coupon)
 admin.site.register(Profile)
 
 def export_reg(modeladmin, request, queryset):
@@ -53,6 +53,10 @@ admin.site.register(Customer, CustomerModelAdmin)
 #
 # admin.site.register(Account,RegAdmin)
 
+@admin.register(Wishlist)
+class WishlistModelAdmin(admin.ModelAdmin):
+    list_display = ['user','product']
+
 
 @admin.register(Payment)
 class PaymentModelAdmin(admin.ModelAdmin):
@@ -60,7 +64,8 @@ class PaymentModelAdmin(admin.ModelAdmin):
 
 @admin.register(OrderPlaced)
 class OrderPlacedModelAdmin(admin.ModelAdmin):
-    list_display = ['user','product','quantity','ordered_date','status','payment']
+    list_display = ['user','product','quantity','ordered_date','status','payment','delivery_boy']
+    list_editable = ['delivery_boy']
 
 
 
@@ -131,8 +136,6 @@ class DealsAdmin(admin.ModelAdmin):
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['user','title','review']
 
-@admin.register(Delivery_assign)
-class Delivery_assignAdmin(admin.ModelAdmin):
-    list_display = ['delivery_boy_id','user_id']
+
 
 

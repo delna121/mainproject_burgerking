@@ -34,3 +34,7 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = OrderPlaced
         fields = ['user','product','quantity','status']
+
+class CouponApplyForm(forms.Form):
+    code = forms.CharField()
+

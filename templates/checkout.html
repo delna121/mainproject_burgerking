@@ -13,12 +13,24 @@
         {% for cart in cart %}
           <h5>Product: <strong>{{cart.product.name}}</strong></h5>
           <p>Quantity: {{cart.quantity}}</p>
-          <p class="fw-bold"> <strong>Price:    {{cart.total_cost}}</strong></p>
+          <p class="fw-bold"> <strong>Price:{{cart.total_cost}}</strong></p>
           {% endfor %}
         </div>
               </div>
+      {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+  <h5><strong> Total amount: {{ total_amount }} </strong></h5>
 
-        <h5><strong>Total Cost: {{amount}} + {{shipping_amount}} = {{totalamount}}</strong></h5>
+
+
+
+
+<!--        <h5><strong>Total Cost: {{amount}} + {{shipping_amount}} = {{totalamount}}</strong></h5>-->
         <br><br>
       
     <small>Term and Condition: By accessing or using the BurgerQueen Website, or by clicking to accept or agree to the Terms of Use when this option is made available to you, you represent that you have read and understood, and agree to be bound by these Terms of Use. If you do not agree to these Terms of Use, you may not use the BurgerQueen Website.</small>
@@ -94,7 +106,7 @@ varc= document.getElementById('btn').value;
 
     var options = {
                     "key": 'rzp_test_76zXSGrXEQqpYv', // Enter the Key ID generated from the Dashboard
-                    "amount": "{{razoramount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                    "amount": "{{razor_amount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                     "currency": "INR",
                     "name": "Burger King",
                     "description": "Test Transaction",

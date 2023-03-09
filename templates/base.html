@@ -147,6 +147,7 @@ body{
           {{user.first_name}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Filter</a>
           <a class="dropdown-item" href="{% url 'profile' %}"> <i class='fas fa-user-circle' style='font-size:20px'></i> Details</a>
           <a class="dropdown-item" href="#"><i class='fas fa-shopping-bag' style='font-size:20px'></i> Orders</a>
           <a class="dropdown-item" href="{% url 'change_password' %}"><i class="fa fa-key" aria-hidden="true"></i>Change Password</a>
@@ -157,14 +158,17 @@ body{
         <span class="badge badge-info"></span></a>
       </li>
 
+
       {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'login' %}">Login</a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="{% url 'register.html' %}">Register</a>
       </li>
       {% endif %}
+
      </ul>
     </form>
   </div>

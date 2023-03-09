@@ -1,24 +1,42 @@
 from hashlib import sha256
-
-from django.shortcuts import render, redirect
+from django import template
+import datetime
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.views.decorators.http import require_POST
 from .models import *
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 # from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User,auth
-from .forms import UserRegistrationForm,CustomerProfileForm,OrderForm
-
+from .forms import UserRegistrationForm,CustomerProfileForm,OrderForm,CouponApplyForm
+from .filter import OrderplacedFilter
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import View
+from django.utils.dateparse import parse_datetime
 from django.db.models import Q
 from django.http import JsonResponse
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from django.contrib.auth import authenticate
 import razorpay
 from django.conf import settings
 
 from django.core.exceptions import ObjectDoesNotExist
 import math,random
+import datetime
+
+def my_function(date_string):
+    if not isinstance(date_string, str):
+        return None
+
+    try:
+        parsed_date = datetime.datetime.fromisoformat(date_string)
+    except ValueError:
+        return None
+
+    return parsed_date
+
 
 
 # Create your views here.
@@ -29,6 +47,7 @@ def index(request):
     else:
         product = Product.objects.all()
     categories = Category.objects.all()
+    # wishlist = Wishlist.objects.filter(Q(product=product) & Q(user=request.user))
     obj = Deals.objects.all()
     review = Reviews.objects.all()
     data = {'product':product, 'categories':categories, 'result': obj,'review':review}
@@ -110,6 +129,9 @@ def send_otp(request):
 def verification(request):
     return render(request,'verification.html')
 
+def filter(request):
+    return render(request,'filter.html')
+
 
 def profile(request):
     if request.method == 'POST':
@@ -125,18 +147,20 @@ def profile(request):
         return redirect('address')
     return render(request,'profile.html')
 
-def review(request):
-    if request.method == "POST":
-        usr = request.user
-        title = request.POST.get('title')
-        review = request.POST.get('review')
-        image = request.FILES.get('wimg')
-        user = Reviews(title=title,review=review,image=image,user=usr)
-        user.save()
-        messages.info(request, 'Your review has been successfully send..!!')
-        return redirect('review')
-    return render(request, 'mailbox-compose.html')
+# def review(request):
+#     if request.method == "POST":
+#         usr = request.user
+#         title = request.POST.get('title')
+#         review = request.POST.get('review')
+#         image = request.FILES.get('wimg')
+#         user = Reviews(title=title,review=review,image=image,user=usr)
+#         user.save()
+#         messages.info(request, 'Your review has been successfully send..!!')
+#         return redirect('review')
+#     return render(request, 'mailbox-compose.html')
 
+def reviewdata(request):
+    return render(request,'reviewdata.html')
 
 @login_required
 def change_password(request):
@@ -163,6 +187,7 @@ def address(request):
     return render(request, 'address.html', {'address':address})
 
 
+
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
@@ -180,7 +205,6 @@ def add_to_cart(request):
     return redirect('index')
 
 
-
 def show_cart(request):
     if request.user.is_authenticated:
         user = request.user
@@ -189,15 +213,64 @@ def show_cart(request):
         shipping_amount = 70.0
         total_amount = 0.0
         cart_product = [p for p in Cart.objects.all() if p.user == user]
-        if cart_product:
-            for p in cart_product:
-                subtotal = (p.quantity * p.product.selling_price)
-                amount += subtotal
+        coupon_code = request.session.get('coupon_code', None)
+        coupon_applied = False  # added variable to track coupon status
+        if coupon_code:
+            try:
+                coupon = Coupon.objects.get(code=coupon_code)
+                if coupon.valid_to > timezone.now():
+                    amount = sum([p.quantity * p.product.selling_price for p in cart_product])
+                    discount = coupon.discount / 100 * amount
+                    total_amount = amount + shipping_amount - discount
+                    coupon_applied = True  # set coupon_applied to True
+                else:
+                    coupon_code = None
+                    del request.session['coupon_code']
+            except Coupon.DoesNotExist:
+                coupon_code = None
+                del request.session['coupon_code']
+        if not coupon_code:
+            amount = sum([p.quantity * p.product.selling_price for p in cart_product])
             total_amount = amount + shipping_amount
-            context = {'cart':cart, 'total_amount':total_amount, 'amount':amount}
-            return render(request, 'addtocart.html', context)
-        else:
-            return render(request, 'emptycart.html')
+        context = {
+            'cart': cart,
+            'total_amount': total_amount,
+            'amount': amount,
+            'coupon_code': coupon_code,
+            'coupon_applied': coupon_applied  # pass coupon_applied to template
+        }
+        return render(request, 'addtocart.html', context)
+    else:
+        return redirect(login)
+
+
+
+def apply_coupon(request):
+    if request.method == 'POST':
+        coupon_code = request.POST.get('coupon_code')
+        try:
+            coupon = Coupon.objects.get(code=coupon_code)
+            request.session['coupon_code'] = coupon_code
+            cart_items = Cart.objects.filter(user=request.user)
+            for item in cart_items:
+                item.coupon = coupon
+                item.save()
+            messages.success(request, "Coupon Applied Successfully")
+        except Coupon.DoesNotExist:
+            return redirect('remove_coupon')
+            messages.warning(request,' Coupon removed')
+    return redirect('show_cart')
+
+
+
+def remove_coupon(request):
+    request.session.pop('coupon_code',None)
+    cart_items = Cart.objects.filter(user=request.user)
+    for item in cart_items:
+        item.coupon=None
+        item.save()
+    messages.success(request,'Coupon removed successfully')
+    return redirect('show_cart')
 
 
 
@@ -244,6 +317,7 @@ def minuscart(request):
         }
         return JsonResponse(data)
 
+
 def remove_ad(request, id):
     user = request.user
     cart = Profile.objects.filter(user_id=user)
@@ -256,36 +330,65 @@ def remove_ad(request, id):
 
 class checkout(View):
     def get(self, request):
-      user = request.user
-      address = Profile.objects.filter(user=request.user)
-      cart = Cart.objects.filter(user=request.user)
-      amount = 0
-      shipping_amount = 70
-      cart_product = [p for p in Cart.objects.all() if p.user == request.user]
-      if cart_product:
-         for p in cart_product:
-            subtotal = p.quantity * p.product.selling_price
-            amount = amount + subtotal
-         totalamount = amount + shipping_amount
-         print(totalamount)
-         razoramount =  totalamount * 100
-         client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
-         data = {"amount": razoramount, "currency": "INR", "receipt": "order_rcptid_11"}
-         payment_response = client.order.create(data=data)
-         print(payment_response)
+        user = request.user
+        address = Profile.objects.filter(user=request.user)
+        cart = Cart.objects.filter(user=request.user)
+        amount = 0
+        shipping_amount = 70
+        coupon_code = request.session.get('coupon_code')
+        cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+        if cart_product:
+            for p in cart_product:
+                subtotal = p.quantity * p.product.selling_price
+                amount = amount + subtotal
 
-         order_id = payment_response['id']
-         request.session['order_id'] = order_id
-         order_status = payment_response['status']
-         if order_status == 'created':
-            payment = Payment(
-                user=user,
-                amount=totalamount,
-                razorpay_order_id=order_id,
-                razorpay_payment_status= order_status
-            )
-            payment.save()
-         return render(request,'checkout.html',locals())
+            if coupon_code:
+                try:
+                    coupon = Coupon.objects.get(code=coupon_code)
+                    if coupon.valid_to > timezone.now():
+                        discount = coupon.discount / 100 * amount
+                        amount = amount - discount
+                except Coupon.DoesNotExist:
+                    pass
+
+            total_amount = amount + shipping_amount
+
+            if coupon_code:
+                try:
+                    coupon = Coupon.objects.get(code=coupon_code)
+                    if coupon.valid_to > timezone.now():
+                        discount = coupon.discount / 100 * amount
+                        discounted_amount = amount - discount
+                except Coupon.DoesNotExist:
+                    pass
+
+            razor_amount = total_amount * 100
+            client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+            data = {"amount": razor_amount, "currency": "INR", "receipt": "order_rcptid_11"}
+            payment_response = client.order.create(data=data)
+            order_id = payment_response['id']
+            request.session['order_id'] = order_id
+            order_status = payment_response['status']
+            if order_status == 'created':
+                payment = Payment(
+                    user=user,
+                    amount=total_amount,
+                    razorpay_order_id=order_id,
+                    razorpay_payment_status=order_status
+                )
+                payment.save()
+
+            context = {
+                'address': address,
+                'cart': cart,
+                'total_amount': total_amount,
+                'razor_amount': razor_amount,
+                'coupon_code': coupon_code,
+            }
+            return render(request, 'checkout.html', context)
+        else:
+            return redirect('cart')
+
 
 def payment_done(request):
     order_id= request.session['order_id']
@@ -303,8 +406,8 @@ def payment_done(request):
         c.delete()
     return redirect('order')
 def order(request):
-    order_placed = OrderPlaced.objects.filter(user=request.user)
-    return render(request,'order.html',locals())
+    order_placed = OrderPlaced.objects.filter(user=request.user).order_by('id').reverse()
+    return render(request,'orderdetailes.html',locals())
 
 
 def de_cart(request, id):
@@ -363,16 +466,18 @@ def delivery_log(request):
 def deliveryhome(request):
     if 'email' in  request.session:
         email = request.session['email']
-        detailes= OrderPlaced.objects.all()
-        profile= Profile.objects.all()
+        detailes = OrderPlaced.objects.filter(is_assigned=True,delivery_boy=email)
+        profile = Profile.objects.all()
         total_order = OrderPlaced.objects.count()
+        myFilter = OrderplacedFilter(request.GET,queryset=detailes)
+        detailes = myFilter.qs
         print(total_order)
         # count = MyModel.objects.filter(status='active').count()
         delivered = OrderPlaced.objects.filter(status='delivered').count()
         print(delivered)
         pending = OrderPlaced.objects.filter(status='pending').count()
         print(pending)
-        return render(request,'deliveryhome.html',{'name':email,'detailes':detailes,'profile':profile,'total_orders':total_order,'delivered':delivered,'pending':pending})
+        return render(request,'deliveryhome.html',{'name':email,'myFilter':myFilter,'detailes':detailes,'profile':profile,'total_orders':total_order,'delivered':delivered,'pending':pending})
     return redirect(delivery_log)
 
 def customerdetailes(request,pk_test):
@@ -381,6 +486,8 @@ def customerdetailes(request,pk_test):
     customer =Profile.objects.filter(user_id=pk_test)
     order=OrderPlaced.objects.filter(user_id=pk_test)
     total_order=OrderPlaced.objects.filter(user_id=pk_test).count()
+    # myFilter = OrderplacedFilter(request.GET,queryset=order)
+    # order=myFilter.qs
     return render(request,'customerdetailes.html',{'name':email,'customer':customer,'order':order,'total_order':total_order})
 
 def update_data(request,pk):
@@ -394,3 +501,4 @@ def update_data(request,pk):
                 form.save()
                 return redirect(deliveryhome)
     return render(request,'update_data.html',{'name':email,'form':form})
+
