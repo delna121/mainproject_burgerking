@@ -141,6 +141,8 @@ def profile(request):
         address = request.POST['address']
         city = request.POST['city']
         zipcode = request.POST['zipcode']
+
+
         profile =Profile(user=usr,name=name,phone=phone,address=address,city=city,zipcode=zipcode)
         profile.save()
         messages.success(request, ' updated successfully.')

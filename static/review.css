@@ -1,0 +1,173 @@
+$ff-main: "Mulish", sans-serif;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $ff-main;
+  background-color: #f1f1f1;
+  color: #1a1a1a;
+}
+
+main {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 2em;
+}
+
+form {
+  max-width: 420px;
+  padding: 2em;
+  background-color: white;
+  box-shadow: 2px 0 15px -2px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+
+  & > h1 {
+    text-align: center;
+    font-weight: 900;
+    color: #443c68;
+  }
+
+  & > p {
+    text-align: center;
+    margin-bottom: 2.4em;
+    line-height: 1.8;
+    font-weight: 600;
+  }
+
+  & > .textarea-group {
+    margin-top: 2.4em;
+
+    & > label {
+      display: block;
+      width: 100%;
+    }
+
+    & > label > span {
+      display: block;
+      font-size: 0.9em;
+      font-weight: 600;
+      margin-bottom: 0.8em;
+    }
+
+    & > label > textarea {
+      box-sizing: border-box;
+      display: block;
+      padding: 1em;
+      font-family: $ff-main;
+      line-height: 1.8;
+      width: 100%;
+      resize: none;
+      border: none;
+      background-color: #ebebeb;
+    }
+  }
+
+  & > div.action-group {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+
+    & > input[type="reset"] {
+      padding: 1em 2em;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 600;
+      opacity: 0.8;
+
+      @media (hover: hover) {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    & > input[type="button"] {
+      border: 2px solid transparent;
+      padding: 1em 2em;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      color: white;
+      background-color: #443c68;
+      transition: all 0.1s ease-in-out;
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: #534485;
+          border: 2px solid #443c68;
+        }
+      }
+    }
+  }
+}
+
+// ==================================================
+// ==================================================
+/* Input Rating */
+.rating {
+  $rating-star-color: #d3d3d3;
+  $rating-star-active-color: #4a4a4a;
+  $rating-star-selected-color: orange;
+
+  user-select: none;
+
+  & > input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    z-index: -999;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+  }
+
+  &__star {
+    font-size: 3.2em;
+    color: $rating-star-color;
+
+    transition: all 0.1s ease-in-out;
+
+    &:active {
+      color: $rating-star-active-color !important;
+
+      text-shadow: 1px 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.3);
+      }
+    }
+  }
+
+  // State
+  @for $i from 1 through 5 {
+    // Selected Star
+    &
+      > input[type="radio"]:nth-child(#{$i}):checked
+      ~ &__box
+      > &__star:nth-child(-n + #{$i}) {
+      color: $rating-star-selected-color;
+    }
+
+    // Keyboard Tab Focus
+    &
+      > input[type="radio"]:nth-child(#{$i}):focus-visible
+      ~ &__box
+      > &__star:nth-child(#{$i}) {
+      outline: solid 1px black;
+    }
+  }
+}
+
+/* End Input Rating */

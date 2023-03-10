@@ -73,6 +73,8 @@ class Profile(models.Model):
     address=models.CharField(max_length=200)
     city=models.CharField(max_length=100)
     zipcode=models.CharField(max_length=14)
+    latitude=models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
+    longitude = models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
 
     def __str__(self):
         return self.name
@@ -151,9 +153,10 @@ class OrderPlaced(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default='Pending')
-    payment = models.ForeignKey(Payment,on_delete=models.CASCADE,default="Pending")
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, default="Pending")
     delivery_boy = models.ForeignKey(Delivery_login, on_delete=models.CASCADE, null=True, blank=True)
-    is_assigned=models.BooleanField(default=False)
+    is_assigned = models.BooleanField(default=False)
+    address = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.product.name} ({self.quantity}) - {self.delivery_boy.user}'
@@ -161,6 +164,7 @@ class OrderPlaced(models.Model):
     @property
     def total_cost(self):
         return self.quantity * self.product.selling_price
+
 
 
 class Deals(models.Model):

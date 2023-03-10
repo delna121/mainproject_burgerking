@@ -54,7 +54,7 @@ body {
 		{% for message in messages %}
          <h3 style="font-size:20px;margin-left:2px;color:red;text-align:center;" class="text-danger font-weight-bold">{{message}}</h3>
            {% endfor %}
-			<form method="POST" action="{% url 'review' %}"class="mail-compose">
+			<form method="POST" action="{% url 'reviewdata	' %}"class="mail-compose">
 				{% csrf_token %}
 				<div class="form-group col-2">
 										<input class="summernote" type="text" name="title" placeholder="Title">

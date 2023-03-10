@@ -20,7 +20,7 @@
       {% if messages %}
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -50,9 +50,9 @@
         </div>
       </div>
         <div class="form-check mt-1 mb-5">
-          <input class="form-check-input" id="btn" type="radio" value="" name="address" required/>
+          <input class="form-check-input" id="btn{{profile.id}}" type="radio" value="{{profile.id}}" name="address" required/>
 
-          <label class="form-check-label fw-bold" for="">
+          <label class="form-check-label fw-bold" for="btn{{profile.id}}">
             Address: {{forloop.counter}} </label>
         </div>
         {% endfor %}
