@@ -156,9 +156,8 @@ light.addEventListener("click", function () {
             <table class="table table-xl">
               <tr>
                 <th>Customer</th>
+                <th>Order Number</th>
 
-                <th>Product</th>
-                <th>Quantity</th>
                 <th>Date of Order</th>
                 <th>Status</th>
 
@@ -168,9 +167,8 @@ light.addEventListener("click", function () {
               </tr>
               {% for i in detailes %}
               <tr>
-              <td> <strong><a href="{% url 'customerdetailes' i.user_id %}">{{i.user}} </a> </strong></td>
-              <td> {{i.product}} </td>
-                <td> {{i.quantity}} </td>
+              <td> <strong><a href="{% url 'customerdetailes' i.user_id i.order_number %}">{{i.user}} </a> </strong></td>
+                <td>{{i.order_number}}</td>
                 <td> {{i.ordered_date}} </td>
                 <td> {{i.status}} </td>
                 <td> <a class="btn btn-sm btn-info" href="{% url 'update_data' i.id %}">Update</a> </td>

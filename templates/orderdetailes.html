@@ -30,6 +30,7 @@
      <div class="col-sm-9">
       <div>
        <h5>{{op.product.name}}</h5>
+          <h5>Order Number: {{op.order_number}}</h5>
        <div class="my-3">
         <label>Quantity:</label>
 
@@ -59,7 +60,7 @@
        <div class="d-flex justify-content-between">
         <a href="#" class="btn btn-sm btn-secondary mr-3" name="prod_id" pid="{{cart.product.id}}">Remove item </a>
               <br>
-        <p class="mb-0"><span><strong>Rate Us</strong></span></p>
+        <p class="mb-0"><span><strong><a href="{% url 'my_form' %}">Rate Us</a></strong></span></p>
 
        </div>
          <br>

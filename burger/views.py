@@ -26,6 +26,17 @@ from django.core.exceptions import ObjectDoesNotExist
 import math,random
 import datetime
 
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import nltk
+import re
+from nltk.corpus import stopwords
+import pyttsx3
+
+# nltk.download('stopwords')
+# set(stopwords.words('english'))
+
+
+
 def my_function(date_string):
     if not isinstance(date_string, str):
         return None
@@ -393,18 +404,19 @@ class checkout(View):
 
 
 def payment_done(request):
-    order_id= request.session['order_id']
+    order_id = request.session['order_id']
     payment_id = request.GET.get('payment_id')
     print(payment_id)
     cust_id = request.GET.get('cust_id')
     user = request.user
-    payment= Payment.objects.get(razorpay_order_id=order_id)
-    payment.paid= True
+    payment = Payment.objects.get(razorpay_order_id=order_id)
+    payment.paid = True
     payment.razorpay_payment_id = payment_id
     payment.save()
     cart = Cart.objects.filter(user=user)
+    order = OrderPlaced.objects.create(user=user, payment=payment)
     for c in cart:
-        OrderPlaced(user=user,product=c.product,quantity=c.quantity,payment=payment).save()
+        OrderItem.objects.create(order=order, product=c.product, quantity=c.quantity).save()
         c.delete()
     return redirect('order')
 def order(request):
@@ -468,7 +480,7 @@ def delivery_log(request):
 def deliveryhome(request):
     if 'email' in  request.session:
         email = request.session['email']
-        detailes = OrderPlaced.objects.filter(is_assigned=True,delivery_boy=email)
+        detailes = OrderPlaced.objects.filter(is_assigned=True,delivery_boy=email).order_by('id').reverse()
         profile = Profile.objects.all()
         total_order = OrderPlaced.objects.count()
         myFilter = OrderplacedFilter(request.GET,queryset=detailes)
@@ -482,15 +494,25 @@ def deliveryhome(request):
         return render(request,'deliveryhome.html',{'name':email,'myFilter':myFilter,'detailes':detailes,'profile':profile,'total_orders':total_order,'delivered':delivered,'pending':pending})
     return redirect(delivery_log)
 
-def customerdetailes(request,pk_test):
+def customerdetailes(request, pk_test, order_number):
     if 'email' in request.session:
         email = request.session['email']
-    customer =Profile.objects.filter(user_id=pk_test)
-    order=OrderPlaced.objects.filter(user_id=pk_test)
-    total_order=OrderPlaced.objects.filter(user_id=pk_test).count()
+    customer = Profile.objects.filter(user_id=pk_test)
+    orders = OrderPlaced.objects.filter(user_id=pk_test, order_number=order_number)
+    if orders.exists():
+        order = orders.first()
+        order_items = order.items.all()
+        total_order = orders.count()
+    else:
+        order_items = []
+        total_order = 0
+    return render(request, 'customerdetailes.html', {'name': email, 'customer': customer, 'order': order, 'total_order': total_order, 'order_items': order_items})
+
     # myFilter = OrderplacedFilter(request.GET,queryset=order)
     # order=myFilter.qs
-    return render(request,'customerdetailes.html',{'name':email,'customer':customer,'order':order,'total_order':total_order})
+    # order_number = request.GET.get('order_number')
+    # order_items = OrderItem.objects.filter(order__order_number=order_number)
+    # return render(request,'customerdetailes.html',{'name':email,'customer':customer,'order':order,'total_order':total_order,'order_items': order_items})
 
 def update_data(request,pk):
     if 'email' in request.session:
@@ -504,3 +526,60 @@ def update_data(request,pk):
                 return redirect(deliveryhome)
     return render(request,'update_data.html',{'name':email,'form':form})
 
+
+def my_form(request):
+    engine = pyttsx3.init()
+    engine.say('Hello, Welcome to the feedback section.')
+    engine.runAndWait()
+    return render(request, 'form.html')
+
+
+def my_post(request):
+    if request.method == 'POST':
+        stop_words = stopwords.words('english')
+        # my contribution
+        stop_words.remove('very')
+        stop_words.remove('not')
+
+        # convert to lowercase
+        text1 = request.POST['text1'].lower()
+
+        # my contribution
+        text_final = ''.join(i for i in text1 if not i.isdigit())
+        net_txt = re.sub('[^a-zA-Z0-9\n]', ' ', text_final)
+
+        # remove stopwords
+        processed_doc1 = ' '.join([i for i in net_txt.split() if i not in stop_words])
+
+        sa = SentimentIntensityAnalyzer()
+        dd = sa.polarity_scores(text=processed_doc1)
+        compound = round((1 + dd['compound']) / 2, 2)
+        final = compound * 100
+
+        if "enough" in text1 or "sufficient" in text1 or "ample" in text1 or "abudant" in text1:
+            engine = pyttsx3.init()
+            engine.say('You liked us by' + str(final) + '% Thank you for your valuable response')
+            engine.runAndWait()
+
+            return render(request, 'form.html', {'final': final, 'text1': net_txt})
+
+        elif final == 50:
+            engine = pyttsx3.init()
+            engine.say('Please enter an adequate resposnse, Thank You')
+            engine.runAndWait()
+            return render(request, 'form.html', {'final': final, 'text1': net_txt})
+        else:
+            engine = pyttsx3.init()
+            engine.say('You liked us by' + str(final) + '% Thank you for your valuable response')
+            engine.runAndWait()
+            if final > 50:
+
+                return render(request, 'form.html', {'final': final, 'text1': net_txt})
+            elif final < 50:
+
+                return render(request, 'form.html', {'final': final, 'text1': net_txt})
+            else:
+
+                return render(request, 'form.html', {'final': final, 'text1': net_txt})
+    else:
+        return redirect('my_form')

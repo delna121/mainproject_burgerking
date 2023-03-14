@@ -64,11 +64,12 @@ class PaymentModelAdmin(admin.ModelAdmin):
 
 @admin.register(OrderPlaced)
 class OrderPlacedModelAdmin(admin.ModelAdmin):
-    list_display = ['user','product','quantity','ordered_date','status','payment','delivery_boy']
+    list_display = ['user','order_number','ordered_date','status','payment','delivery_boy']
     list_editable = ['delivery_boy']
 
-
-
+@admin.register(OrderItem)
+class OrderItemModelAdmin(admin.ModelAdmin):
+    list_display = ['order','product','quantity']
 
 @admin.register(Category)
 class CategoryModelAdmin(admin.ModelAdmin):

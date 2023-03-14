@@ -1,6 +1,10 @@
 import datetime
+import time
+import uuid
 
-
+from django.core.mail import send_mail
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.db import models
 from django.utils.dateparse import parse_datetime
 from django.contrib.auth.models import User
@@ -143,14 +147,27 @@ class Delivery_login(models.Model):
 
     def __str__(self):
         return self.user
+@receiver(post_save, sender=Delivery_login)
+def send_delivery_boy_acceptance_email(sender, instance, **kwargs):
+    if instance.status == True:
+        delivery_boy = Delivery_reg.objects.get(email=instance.user)
+        subject = 'Delivery boy registration accepted'
+        message = 'Dear {},\n\n Lets Join Together!!...Your registration as a delivery boy has been accepted.'.format(
+            delivery_boy.first_name)
+        from_email = 'delnaannajoy2023a@mca.ajce.in'
+        recipient_list = [delivery_boy.email]
+        send_mail(subject, message, from_email, recipient_list)
 
 
-
-
+def generate_order_number():
+    last_order = OrderPlaced.objects.last()
+    if last_order:
+        return last_order.order_number + 1
+    else:
+        return 1000  # starting number
 class OrderPlaced(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    order_number = models.IntegerField(default=generate_order_number, unique=True)
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default='Pending')
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, default="Pending")
@@ -159,7 +176,16 @@ class OrderPlaced(models.Model):
     address = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.product.name} ({self.quantity}) - {self.delivery_boy.user}'
+        return f'{self.order_number}  - {self.user.username}'
+
+    @property
+    def total_cost(self):
+        return sum(item.total_cost for item in self.items.all())
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(OrderPlaced, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
+    quantity = models.PositiveIntegerField(default=1)
 
     @property
     def total_cost(self):

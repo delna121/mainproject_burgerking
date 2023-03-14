@@ -146,34 +146,38 @@ light.addEventListener("click", function () {
          <h5>Orders</h5>
           <br>
           <div class="card card-body">
+            {% if order_items %}
             <table class="table table-xl">
+              <thead>
               <tr>
-                <th>Customer</th>
-
                 <th>Product</th>
                 <th>Quantity</th>
-                <th>Date of Order</th>
-                <th>Status</th>
 
 
-
-                <th>Update</th>
               </tr>
-              {% for i in order %}
-              <tr>
-              <td> {{i.user }} </td>
-              <td>  {{i.product}}</td>
-                <td> {{i.quantity}} </td>
-                <td> {{i.ordered_date}} </td>
-                <td> {{i.status}} </td>
-                <td> <a class="btn btn-sm btn-info" href="{% url 'update_data' i.id %}">Update</a> </td>
-<!--                <td> {{i.phone}} </td>-->
-              </tr>
+              </thead>
+              <tbody>
+
+             {% for item in order_items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
 
 
-
+        </tr>
               {% endfor %}
-            </table>
+    </tbody>
+  </table>
+            {% else %}
+                   <p>No items found for this order number.</p>
+            {% endif %}
+
+
+
+
+
+
+
         </div>
         </div>
       </div>

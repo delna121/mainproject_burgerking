@@ -42,7 +42,7 @@ urlpatterns = [
     path('delivery_reg/',views.delivery_reg,name='delivery_reg'),
     path('delivery_log/',views.delivery_log,name='delivery_log'),
     path('deliveryhome/',views.deliveryhome,name='deliveryhome'),
-    path('customerdetailes/<str:pk_test>/',views.customerdetailes,name='customerdetailes'),
+    path('customerdetailes/<int:pk_test>/<int:order_number>/', views.customerdetailes, name='customerdetailes'),
     path('update_data/<str:pk>/',views.update_data,name='update_data'),
 
 
@@ -51,6 +51,9 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('my_form', views.my_form, name='my_form'),
+    path('my_post', views.my_post, name='my_post'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

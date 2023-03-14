@@ -140,13 +140,15 @@ MEDIA_URL = '/media/'
 MEDIAFILES_DIRS = [os.path.join(BASE_DIR, 'media')]
 
 
+
+#
 #SMTP Configruation
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'delnaannajoy2023a@mca.ajce.in'
-EMAIL_HOST_PASSWORD = 'Delna@121'
+EMAIL_HOST_PASSWORD = 'krxaiudcxbopetnz'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 

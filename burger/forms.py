@@ -33,7 +33,7 @@ class CustomerProfileForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = OrderPlaced
-        fields = ['user','product','quantity','status']
+        fields = ['user','status']
 
 class CouponApplyForm(forms.Form):
     code = forms.CharField()
