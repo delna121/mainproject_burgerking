@@ -1,0 +1,385 @@
+<html>
+    <head>
+      <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<style>
+table, th, td {
+  border: 1px solid black;
+}
+.div1{
+  text-align: center;
+}
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  margin: -76px 0 0 -76px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 }
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom {
+  from{ bottom:-100px; opacity:0 }
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
+}
+body {
+	font: 100% Arial, Helvetica, sans-serif;
+	line-height: 1.5;
+	position: relative;
+	color: rgb(76, 67, 65);
+	font-weight:normal;
+	font-style:normal;
+  overflow: hidden; /* Hide scrollbars */
+  width: 1280px;
+	margin: 20 auto;
+  padding: 20px;
+}
+
+
+form, div{
+	margin-bottom: 5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50em
+}
+
+h1 {
+	font-family: Georgia, Times, "Times New Roman", serif;
+	font-size: 1.8em;
+
+	margin-bottom: 1.5em;
+	background: url(../_images/icon_sprites_50.png) no-repeat
+}
+
+.example_a {
+    border: none;
+    background: #404040;
+    color: #ffffff !important;
+    font-weight: 100;
+    padding: 20px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    display: inline-block;
+    transition: all 0.3s ease 0s;
+    float: right;
+    margin-top: 2em;
+}
+
+.example_a:hover {
+    color: #404040 !important;
+    font-weight: 700 !important;
+    letter-spacing: 3px;
+    background: none;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.3s ease 0s;
+}
+
+.topnav {
+  height:15%;
+  float:left;
+  margin-left:-1%;
+  margin-top: -2%;
+}
+
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.active {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.topnav .icon {
+  display: none;
+}
+.topnav a:hover, .dropdown:hover .dropbtn {
+  background-color: #555;
+  color: white;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+
+}
+
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child), .dropdown .dropbtn {
+    display: none;
+  }
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .topnav.responsive .dropdown {float: none;}
+  .topnav.responsive .dropdown-content {position: relative;}
+  .topnav.responsive .dropdown .dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+
+
+
+.rate {
+  float:inline-start;
+  height: 46px;
+  padding: 0 10px;
+}
+.rate:not(:checked) > input {
+  position:absolute;
+  top:-9999px;
+}
+.rate:not(:checked) > label {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate:not(:checked) > label:before {
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}
+
+</style>
+        <title>{{ title }} Jobsnatch Feedback</title>
+    </head>
+    <body onload="myFunction()" style="background-image: linear-gradient(rgb(33, 171, 239), rgba(21, 255, 255, 0.425)); color:black;font-weight:bolder">
+
+      <div class="topnav" id="myTopnav">
+
+        <div style="margin-left: 75%;">
+          <center><h1 style="font-weight: bolder; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:xx-large;margin-top:1.5%;">Burger King</h1></center>
+        </div>
+        <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+      </div>
+      <script>
+      function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+      </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+        <form method="POST" action="my_post">
+          {% csrf_token %}
+            <textarea name="text1" placeholder="Post your Feedbacks here ...." rows="10" cols="90" style="background:black;color:white;border-radius:5px" onkeypress="return /[a-z /st]/i.test(event.key)" onclick=a() id="b" value="{{a}}" required></textarea>
+            <input class="example_a" type="submit"  style="height: 7%;width:105%; padding:5px; margin-right:-5%">
+        </form>
+        <br>
+        <!-- <form action="" method="post">
+          <div class="rate">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" title="text">5 stars</label>
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" title="text">4 stars</label>
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" title="text">3 stars</label>
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" title="text">2 stars</label>
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" title="text">1 star</label>
+          </div>
+
+        </form> -->
+        <br>
+        {% if final %}
+        <div id="loader"></div>
+        <div style="display:none;" id="myDiv" class="animate-bottom">
+        <div>
+          {% if  final < 25 %}
+              <!-- <div > -->
+                <h4  style="margin-right: 45%; width:100%" id="a">The Sentiment of  : '{{ text1 }}' is {{ final}}% </h4>
+                <h5 style="margin-right:75%; font-weight:bold">You liked us by : </h5>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"  style= "width:{{final}}%">
+                  {{ final}}%
+                  </div>
+                <!-- </div> -->
+              </div>
+              <center> <p style="font-weight: bold;">Thank you for your valuable response :)</p></center>
+        {% elif "enough" in text1 or "sufficient" in text1 or "ample" in text1 or "abudant" in text1 %}
+              <h4  style="margin-right: 45%; width:100%" id="a">The Sentiment of  : '{{ text1 }}' is {{ final}}% </h4>
+              <h5 style="margin-right:75%; font-weight:bold">You liked us by : </h5>
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"  style= "width:{{final}}%">
+                {{ final}}%
+                </div>
+              </div>
+              <center> <p style="font-weight: bold;">Thank you for your valuable response :)</p></center>
+         {% elif  final == 50 %}
+              <div>
+                <div>
+                  <h4  style="margin-right: 45%; width:100%" id="a">You Entered  : '{{ text1 }}'</h4>
+                  <h1>Please enter an adequate resposnse, Thank You :)</h1>
+                </div>
+             </div>
+
+          {% elif  final > 25 and final < 70 %}
+                <h4  style="margin-right: 45%; width:100%" id="a">The Sentiment of  : '{{ text1 }}' is {{ final}}% </h4>
+                <h5 style="margin-right:75%; font-weight:bold">You liked us by : </h5>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"  style= "width:{{final}}%">
+                  {{ final}}%
+                  </div>
+              </div>
+              <center> <p style="font-weight: bold;">Thank you for your valuable response :)</p></center>
+          {% else %}
+                  <h4  style="margin-right: 45%; width:100%" id="a">The Sentiment of  : '{{ text1 }}' is {{ final}}% </h4>
+                  <h5 style="margin-right:75%; font-weight:bold">You liked us by : </h5>
+
+                  <div class="progress" style="width: 105% ;">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"  style= "width:{{final}}%">
+                    {{ final}}%
+                    </div>
+                  </div>
+                  <center> <p style="font-weight: bold;">Thank you for your valuable response :)</p></center>
+          {% endif %}
+
+        </div>
+
+      </div>
+
+
+          <script>
+            var myVar;
+
+            function myFunction() {
+              myVar = setTimeout(showPage, 1000);
+            }
+
+            function showPage() {
+              document.getElementById("loader").style.display = "none";
+              document.getElementById("myDiv").style.display = "block";
+            }
+            function a(){
+              document.getElementById("b").webkitSpeech = true;
+            }
+          </script>
+			<!-- <h2>Score table</h2>
+
+
+
+<table style="width:100%">
+  <tr>
+    <th>SENTIMENT METRIC</th>
+    <th>SCORE</th>
+  </tr>
+  <tr>
+    <td>Positive</td>
+    <td>{{text2}}</td>
+
+  </tr>
+  <tr>
+    <td>Neutral</td>
+    <td>{{text3}}</td>
+
+  </tr>
+  <tr>
+    <td>Negative</td>
+    <td>{{text5}}</td>
+
+  </tr>
+  <tr>
+    <td>Compound</td>
+    <td>{{text4}}</td>
+
+  </tr>
+</table> -->
+            {% else %}
+            <p></p>
+            {% endif %}
+            <!-- my contribution -->
+
+    </body>
+</html>
