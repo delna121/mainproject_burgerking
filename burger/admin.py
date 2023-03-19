@@ -1,7 +1,16 @@
+from django.contrib import admin
+from django.db.models import Avg, Count
+from django.urls import path, reverse
+from django.http import HttpResponse
+from django.http import JsonResponse
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+
+
 import csv
 
-from django.contrib import admin
-from django.http import HttpResponse
+from django.utils.html import format_html
 
 from burger import models
 from .models import *
@@ -115,24 +124,64 @@ class Delivery_regAdmin(admin.ModelAdmin):
     verbose_name_plural = "Delivery_boy Details"
 admin.site.register(Delivery_reg,Delivery_regAdmin)
 
-
 class Delivery_logAdmin(admin.ModelAdmin):
-    list_display=['user']
-    exclude=('password',)
+    list_display = ['user']
+    exclude = ('password',)
+
     def has_add_permission(self, request, obj=None):
         return False
+
     def has_delete_permission(self, request, obj=None):
         return False
+
     verbose_name_plural = "Delivery_Boy Details"
-admin.site.register(Delivery_login,Delivery_logAdmin)
+
+    def sentiment_graph(self, request):
+        delivery_boys = Delivery_login.objects.all()
+        data = {}
+        for delivery_boy in delivery_boys:
+            reviews = ReviewData.objects.filter(delivery_boy=delivery_boy)
+            if reviews.exists():
+                sentiment_avg = reviews.aggregate(Avg('sentiment_polarity'))['sentiment_polarity__avg']
+                data[delivery_boy.user] = sentiment_avg or 0
+
+        # generate graph using matplotlib
+        fig, ax = plt.subplots()
+        fig.set_size_inches(20,15)
+        ax.bar(data.keys(), data.values())
+        ax.set_xlabel('Delivery Boys')
+        ax.set_ylabel('Average Sentiment Polarity')
+        ax.set_title('Best Delivery Boys based on Sentiment Analysis')
+        plt.xticks(rotation=45)
+
+        # save graph as image and encode as base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
+        # return HTTP response with graph as image
+        response = HttpResponse(content_type='image/png')
+        response.write(base64.b64decode(image))
+        return response
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('sentiment-graph/', self.admin_site.admin_view(self.sentiment_graph), name='sentiment-graph'),
+        ]
+        return custom_urls + urls
 
 
+admin.site.register(Delivery_login, Delivery_logAdmin)
 
 
 @admin.register(Deals)
 class DealsAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+
+@admin.register(ReviewData)
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['user','title','review']

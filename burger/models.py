@@ -2,6 +2,7 @@ import datetime
 import time
 import uuid
 
+from textblob import TextBlob
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -145,6 +146,7 @@ class Delivery_login(models.Model):
     password= models.CharField(max_length=200)
     status =models.BooleanField(max_length=100,default=False)
 
+
     def __str__(self):
         return self.user
 @receiver(post_save, sender=Delivery_login)
@@ -165,6 +167,7 @@ def generate_order_number():
         return last_order.order_number + 1
     else:
         return 1000  # starting number
+
 class OrderPlaced(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order_number = models.IntegerField(default=generate_order_number, unique=True)
@@ -272,9 +275,25 @@ class Delivery_reg(models.Model):
 
 class ReviewData(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    delivery_boy= models.ForeignKey(Delivery_login, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
     review = models.CharField(max_length=500, blank=True)
     image = models.ImageField(upload_to='media', null=True, blank=True)
+    sentiment_polarity = models.FloatField(default=0.0)
 
     def __str__(self):
         return str(self.user)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.sentiment_polarity = self.get_sentiment()
+        super().save(*args, **kwargs)
+
+    def get_sentiment(self):
+        blob = TextBlob(self.review)
+        sentiment_polarity = blob.sentiment.polarity
+        return sentiment_polarity
+
+
+class PreBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

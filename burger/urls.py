@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
 from burger import views
+from .admin import Delivery_logAdmin
 from .views import*
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from burger.admin import Delivery_logAdmin
 
 
 urlpatterns = [
@@ -32,7 +34,7 @@ urlpatterns = [
     path('de_cart/<int:id>/', views.de_cart,name='de_cart'),
     path('apply_coupon/',views.apply_coupon,name='apply_coupon'),
 
-    path('reviewdata/', views.reviewdata, name='reviewdata'),
+    path('reviewdata/<int:order_number>/', views.rate_delivery_boy, name='reviewdata'),
     path('checkout/', views.checkout.as_view(), name='checkout'),
     path('paymentdone/',views.payment_done,name='paymentdone'),
 
@@ -51,6 +53,8 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    path('admin/burger/delivery_login/sentiment-graph/', admin.site.admin_view(Delivery_logAdmin.sentiment_graph), name='sentiment-graph'),
     path('my_form', views.my_form, name='my_form'),
     path('my_post', views.my_post, name='my_post'),
 

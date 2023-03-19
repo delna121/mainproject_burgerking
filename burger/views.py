@@ -2,6 +2,7 @@ from hashlib import sha256
 from django import template
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from .models import *
@@ -172,8 +173,23 @@ def profile(request):
 #         return redirect('review')
 #     return render(request, 'mailbox-compose.html')
 
-def reviewdata(request):
-    return render(request,'reviewdata.html')
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import OrderPlaced, ReviewData
+
+def rate_delivery_boy(request, order_number):
+    order = get_object_or_404(OrderPlaced, order_number=order_number)
+    delivery_boy = order.delivery_boy
+    if request.method == 'POST':
+        review = request.POST['review']
+        review_data = ReviewData.objects.create(
+            user=request.user,
+            delivery_boy=delivery_boy,
+            review=review,
+        )
+        return redirect(reverse_lazy('index'))
+    else:
+        context = {'order': order, 'delivery_boy': delivery_boy, 'delivery_boy_name': delivery_boy.user}
+        return render(request, 'reviewdata.html', context)
 
 @login_required
 def change_password(request):
