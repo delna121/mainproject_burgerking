@@ -1,6 +1,4 @@
-import datetime
-import time
-import uuid
+
 
 from textblob import TextBlob
 from django.core.mail import send_mail
@@ -10,6 +8,8 @@ from django.db import models
 from django.utils.dateparse import parse_datetime
 from django.contrib.auth.models import User
 from django.utils.html import mark_safe
+
+
 
 STATE_CHOICES = (
     ("Andhra Pradesh","Andhra Pradesh"),
@@ -104,7 +104,6 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
-    # category = models.CharField(max_length=250,default=True)
     cat = models.ForeignKey(Category, on_delete=models.CASCADE)
     product_image = models.ImageField(upload_to='media')
     marked_price = models.PositiveIntegerField()
@@ -113,6 +112,8 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
 
 
 
@@ -145,7 +146,6 @@ class Delivery_login(models.Model):
     user= models.EmailField(max_length=200,primary_key=True,unique=True,default=1)
     password= models.CharField(max_length=200)
     status =models.BooleanField(max_length=100,default=False)
-
 
     def __str__(self):
         return self.user
@@ -285,8 +285,8 @@ class ReviewData(models.Model):
         return str(self.user)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.sentiment_polarity = self.get_sentiment()
+        self.sentiment_polarity = self.get_sentiment()
+        print('Saving ReviewData:', self)
         super().save(*args, **kwargs)
 
     def get_sentiment(self):
@@ -297,3 +297,6 @@ class ReviewData(models.Model):
 
 class PreBook(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Analysis(models.Model):
+    name = models.ForeignKey(Delivery_login,on_delete=models.CASCADE)

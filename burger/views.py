@@ -15,13 +15,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import View
 from django.utils.dateparse import parse_datetime
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.auth import authenticate
 import razorpay
 from django.conf import settings
+from django.views.decorators.cache import never_cache
 
 from django.core.exceptions import ObjectDoesNotExist
 import math,random
@@ -175,6 +176,22 @@ def profile(request):
 
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import OrderPlaced, ReviewData
+
+
+@never_cache
+def sentiment_graph(request, pk):
+    delivery_login = get_object_or_404(Delivery_login, pk=pk)
+    reviews = ReviewData.objects.filter(delivery_boy=delivery_login)
+    if reviews.exists():
+        sentiment_avg = reviews.aggregate(Avg('sentiment_polarity'))['sentiment_polarity__avg']
+    else:
+        sentiment_avg = 0
+    data = {
+        'delivery_login': delivery_login,
+        'sentiment_avg': sentiment_avg,
+    }
+    return render(request, 'burger/delivery_login_sentiment_graph.html', data)
+
 
 def rate_delivery_boy(request, order_number):
     order = get_object_or_404(OrderPlaced, order_number=order_number)
