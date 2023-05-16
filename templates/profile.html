@@ -20,7 +20,7 @@
                 <form onsubmit ="return nameValidation(),phoneValidation(),cityValidation(),zipValidation() " action="{% url 'profile' %}" method="post" align="center" id="logform" name="logform">
                     {% include 'alert.html' %}
                     {% csrf_token %}
-                    <input type="text" class="form-input" name="name" id="uname"  placeholder="Name" onkeyup='nameValidation(this)' required/>
+                    <input type="text" class="form-input" name="name" id="name"  placeholder="Name" onkeyup='nameValidation(this)' required/>
                     <span class="error-msg" id="pname"></span><br>
 
                      <input type="text" name="phone" id="phone" placeholder="Phone No" required onkeyup='ValidatePhone(this)' required/>
@@ -62,7 +62,9 @@
                     <span class="error-msg" id="pzipcode"></span><br>
                     <br>
 
-                    <input type="submit" value="update">
+                    <input type="submit" id='submit' value="update">
+
+<!--                    <a href="">Get Your location</a>-->
 
                 </form>
             </div>

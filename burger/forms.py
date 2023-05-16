@@ -38,3 +38,9 @@ class OrderForm(forms.ModelForm):
 class CouponApplyForm(forms.Form):
     code = forms.CharField()
 
+class ProductForm(forms.ModelForm):
+    excel_file = forms.FileField(required=True)
+
+    class Meta:
+        model = Product
+        fields = '__all__'

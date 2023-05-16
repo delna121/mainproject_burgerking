@@ -34,6 +34,10 @@ INSTALLED_APPS = [
 
     'jazzmin',
     'razorpay',
+    'chartjs',
+    'import_export',
+    'colorfield',
+    'admin_interface',
     'burger.apps.BurgerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,11 +47,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'django_filters',
+    'django_extensions',
 
     
 ]
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -136,6 +142,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
+
 MEDIA_URL = '/media/'
 MEDIAFILES_DIRS = [os.path.join(BASE_DIR, 'media')]
 
@@ -156,9 +163,33 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-LOGIN_REDIRECT_URL = 'index'
 
+LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL_ADMIN = 'view'
 LOGIN_URL = 'login'
 
 RAZOR_KEY_ID="rzp_test_76zXSGrXEQqpYv"
 RAZOR_KEY_SECRET = "zSnHDF2ZLpB1cmgurrNQcgFg"
+
+JAZZMIN_SETTINGS = {
+
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    #
+    # Logo to use for your site, must be present in static files, used for brand on top left
+    "site_logo": "static/logo2.png",
+
+
+    # Links to put along the top menu
+    "topmenu_links": [
+
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "View Website", "url": "http://127.0.0.1:8000/", "new_window": True},
+        {"name": "Sales Chart", "url": "http://127.0.0.1:8000/view/", "new_window": True},
+        # {"name":"Sentiment Graph", "url":"http://127.0.0.1:8000/admin/antiqueapp/product/sentiment-graph/","new_window":True},
+        # {"name":"Product Sales", "url":"http://127.0.0.1:8000/admin/antiqueapp/product/top-products/","new_window":True},
+
+
+    ],
+}

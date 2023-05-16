@@ -1,10 +1,13 @@
-
-
+from django.db.models import Count, Avg
+from django.http import HttpResponse
+from django.utils import timezone
 from textblob import TextBlob
 from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import models
+import io
+from collections import Counter
 from django.utils.dateparse import parse_datetime
 from django.contrib.auth.models import User
 from django.utils.html import mark_safe
@@ -78,8 +81,10 @@ class Profile(models.Model):
     address=models.CharField(max_length=200)
     city=models.CharField(max_length=100)
     zipcode=models.CharField(max_length=14)
-    latitude=models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
-    longitude = models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
+
+
+    # latitude=models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
+    # longitude = models.DecimalField(max_digits=9,decimal_places=6,null=True,blank=True)
 
     def __str__(self):
         return self.name
@@ -100,7 +105,7 @@ class Category(models.Model):
             return mark_safe('<img src="{}" width="100" height="100" />'.format(self.category_image.url))
         return ""
 
-
+import matplotlib.pyplot as plt
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -108,14 +113,101 @@ class Product(models.Model):
     product_image = models.ImageField(upload_to='media')
     marked_price = models.PositiveIntegerField()
     selling_price = models.PositiveIntegerField()
+    rating = models.DecimalField(max_digits=3, decimal_places=1, null=True, blank=True)
     is_available = models.BooleanField(default=True)
+    veg_status =models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
+    @property
+    def thumbnail_preview(self):
+        if self.product_image:
+            return mark_safe('<img src="{}" width="100" height="100" />'.format(self.product_image.url))
+        return ""
 
+    def update_rating(self):
+        reviews = self.review_set.all()
+        count = reviews.count()
+        if count == 0:
+            self.rating = None
+        else:
+            sentiment_avg = reviews.aggregate(Avg('sentiment_polarity'))['sentiment_polarity__avg'] or 0
+            if sentiment_avg >= 0.6:
+                self.rating = 5.0
+            elif sentiment_avg >= 0.4:
+                self.rating = 4.0
+            elif sentiment_avg >= -0.3:
+                self.rating = 3.0
+            elif sentiment_avg >= -0.1:
+                self.rating = 2.0
+            else:
+                self.rating = 1.0
+        self.save()
 
+        @classmethod
+        def top_rated(cls, limit=5):
+            return cls.objects.filter(rating__isnull=False).order_by('-rating')[:limit]
+#
+# class Review(models.Model):
+#     RATING_CHOICES = (
+#         (5, '5 stars'),
+#         (4, '4 stars'),
+#         (3, '3 stars'),
+#         (2, '2 stars'),
+#         (1, '1 star'),
+#     )
+#
+#     SENTIMENT_CHOICES = (
+#         ('hp', 'Highly Positive'),
+#         ('hn', 'Highly Negative'),
+#         ('p', 'Positive'),
+#         ('n', 'Negative'),
+#         ('ne', 'Neutral')
+#     )
+#
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField()
+#     rating = models.IntegerField(choices=RATING_CHOICES)
+#     message = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     sentiment_polarity = models.FloatField(null=True, blank=True)
+#     sentiment = models.CharField(choices=SENTIMENT_CHOICES, max_length=2, null=True, blank=True)
+#
+#     def save(self, *args, **kwargs):
+#         blob = TextBlob(self.message)
+#         self.sentiment_polarity = blob.sentiment.polarity
+#
+#         if self.sentiment_polarity > 0.5:
+#             self.sentiment = 'hp'
+#         elif self.sentiment_polarity > 0:
+#             self.sentiment = 'p'
+#         elif self.sentiment_polarity < -0.5:
+#             self.sentiment = 'hn'
+#         elif self.sentiment_polarity < 0:
+#             self.sentiment = 'n'
+#         else:
+#             self.sentiment = 'ne'
+#
+#         super().save(*args, **kwargs)
+#
+#
 
+    # def sentiment_category(self):
+    #     if self.sentiment_score is None:
+    #         return 'Unknown'
+    #     if self.sentiment_score >= 0.9:
+    #         return 'HP'
+    #     elif self.sentiment_score >= 0.7:
+    #         return 'P'
+    #     elif self.sentiment_score >= 0.5:
+    #         return 'N'
+    #     elif self.sentiment_score >= 0.3:
+    #         return 'Neg'
+    #     else:
+    #         return 'HN'
 
 
 STATUS_CHOICES = (
@@ -138,6 +230,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.razorpay_order_id
+
 class Wishlist(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
@@ -169,14 +262,35 @@ def generate_order_number():
         return 1000  # starting number
 
 class OrderPlaced(models.Model):
+    MONTH_CHOICES = (
+        (1, 'January'),
+        (2, 'February'),
+        (3, 'March'),
+        (4, 'April'),
+        (5, 'May'),
+        (6, 'June'),
+        (7, 'July'),
+        (8, 'August'),
+        (9, 'September'),
+        (10, 'October'),
+        (11, 'November'),
+        (12, 'December'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order_number = models.IntegerField(default=generate_order_number, unique=True)
     ordered_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=50, default='Pending')
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, default="Pending")
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     delivery_boy = models.ForeignKey(Delivery_login, on_delete=models.CASCADE, null=True, blank=True)
-    is_assigned = models.BooleanField(default=False)
-    address = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    addres = models.CharField(max_length=50, null=True, blank=True)
+    phone = models.IntegerField(null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    state = models.CharField(max_length=50, null=True, blank=True)
+    zipcode = models.IntegerField(null=True, blank=True)
+
 
     def __str__(self):
         return f'{self.order_number}  - {self.user.username}'
@@ -255,6 +369,24 @@ class Cart(models.Model):
     def total_cost(self):
         return self.quantity * self.product.selling_price
 
+    def send_coupon_notification(self):
+        user_email = self.user.email
+        subject = 'New Coupon Available'
+        message = f"Hello,\n\nWe have added a new coupon code: {self.coupon.code}\n\nHappy shopping!"
+        from_email = 'your_email@gmail.com'
+        recipient_list = [user_email]
+        send_mail(subject, message, from_email, recipient_list)
+
+    def send_cart_reminder(self):
+        user_email = self.user.email
+        subject = 'Reminder: Products in Your Cart'
+        message = f"Hello,\n\nYou have the following products in your cart:\n\n"
+        message += f"- {self.product.name} (Quantity: {self.quantity})\n"
+        message += "\nPlease complete your purchase.\n\nHappy shopping!"
+        from_email = 'your_email@gmail.com'
+        recipient_list = [user_email]
+        send_mail(subject, message, from_email, recipient_list)
+
 
 
 
@@ -294,9 +426,65 @@ class ReviewData(models.Model):
         sentiment_polarity = blob.sentiment.polarity
         return sentiment_polarity
 
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    sentiment_polarity = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user)
+
+    def save(self, *args, **kwargs):
+        self.sentiment_polarity = self.get_sentiment()
+        super().save(*args, **kwargs)
+        self.product.update_rating()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        self.product.update_rating()
+
+    def get_sentiment(self):
+        blob = TextBlob(self.message)
+        sentiment_polarity = blob.sentiment.polarity
+        return sentiment_polarity
+
+
 
 class PreBook(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10)
+    address = models.CharField(max_length=200)
+    place = models.CharField(max_length=50)
+    pincode = models.CharField(max_length=6)
+    date = models.DateField()
+
+
+class PreBooking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=10)
+    address = models.CharField(max_length=255)
+    place = models.CharField(max_length=255)
+    pincode = models.CharField(max_length=7)
+    date = models.DateField()
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Analysis(models.Model):
     name = models.ForeignKey(Delivery_login,on_delete=models.CASCADE)
+
+class Sales(models.Model):
+    date = models.DateField()
+    item = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    total_amount = models.DecimalField(max_digits=8, decimal_places=2)
+
+class test(models.Model):
+    name=models.CharField(max_length=50)
+class Visit(models.Model):
+    date = models.DateField(default=timezone.now)

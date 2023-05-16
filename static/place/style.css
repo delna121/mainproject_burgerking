@@ -1,0 +1,23 @@
+body {
+  background: #fff;
+}
+
+.logo {
+  width: 120px;
+}
+
+.has-text-success-dark	{
+  color: #1A8865;
+}
+
+.has-background-success-dark {
+  color: #1A8865;
+}
+
+.aa-Autocomplete {
+  --aa-primary-color-rgb: 219, 219, 219;
+}
+
+.aa-Autocomplete:focus-within {
+  --aa-primary-color-rgb: 54, 54, 54;
+}

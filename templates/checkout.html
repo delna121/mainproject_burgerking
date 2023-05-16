@@ -30,6 +30,7 @@
 
 
 
+
 <!--        <h5><strong>Total Cost: {{amount}} + {{shipping_amount}} = {{totalamount}}</strong></h5>-->
         <br><br>
       
@@ -38,30 +39,40 @@
   <div class="col-sm-4 offset-sm-1">
     <h4>Select Shipping Address</h4>
     <hr>
-    <form method="post" id="forms">
+    <form method="post" id="forms"action="{% url 'checkout' %}">
         {% csrf_token %}
 
 
         {% for i in address %}
-        <div class="card">
-        <div class="card-body">
-        <h5>{{i.name}}</h5>
-       <p>{{i.phone}},<br>{{i.address}},<br>{{i.city}}, {{i.state}}, {{i.zipcode}}</p>
-        </div>
+    <div class="card">
+      <div class="card-body">
+          <h5><input type="text" value="{{i.name}}" name="name" style="border:none;">
+          <input type="text" value="{{i.address}}" name="name" style="border:none;">
+          <input type="text" value="{{i.phone}}" name="name" style="border:none;">
+          <input type="text" value="{{i.city}}" name="name" style="border:none;">
+
+          <input type="text" value="{{i.zipcode}}" name="name" style="border:none;">
+          </h5>
+<!--        <h5>{{i.name}}</h5>-->
+<!--        <p>{{i.phone}},<br>{{i.address}},<br>{{i.city}}, {{i.state}}, {{i.zipcode}}</p>-->
       </div>
-        <div class="form-check mt-1 mb-5">
-          <input class="form-check-input" id="btn{{profile.id}}" type="radio" value="{{profile.id}}" name="address" required/>
+    </div>
+    <div class="form-check mt-1 mb-5">
+      <input class="form-check-input" id="custadd{{forloop.counter}}" type="radio" value="{{i.id}}" name="custid" required onclick="setdata('{{i.id}}')"/>
+            <label class="form-check-label fw-bold" for="custadd{{forloop.counter}}">
+                Address: {{forloop.counter}}
+            </label>
+    </div>
+  {% endfor %}
+         <!-- Add the hidden input field for address_id -->
+    <input type="hidden" name="address_id" id="address_id" value="">
+    <div>
+        <a class="nav-link" href="{% url 'profile' %}">
+            <span class="badge bg-danger"></span>
+            <i class="fa fa-address-card" style="font-size:20px"></i>Add address
+        </a>
+    </div>
 
-          <label class="form-check-label fw-bold" for="btn{{profile.id}}">
-            Address: {{forloop.counter}} </label>
-        </div>
-        {% endfor %}
-<div >
-        <a class="nav-link" href="{% url 'profile' %}"><span class="badge bg-danger"></span><i class="fa fa-address-card" style="font-size:20px"></i>Add address</a>
-</div>
-
-
-        
         <div class="text-end">
           <button  id="rzp-button1" type="submit" class="btn btn-warning mt-1 mb-5 px-5 fw-bold" style="display:blocked">Payment</button>
         </div>
@@ -84,25 +95,23 @@
 
 <!--</script>-->
 
-<script>
-varc= document.getElementById('btn').value;
-    if(c.checked == false)
-             {
-                 document.getElementById('rzp-button1').style.display="block";
-                 document.getElementById('rzp-button1').innerHTML="**Please Select Address";
-                 return false;
-             }
-             else{
-                 document.getElementById('rzp-button1').style.display="none";
-                  return true;
-             }
-</script>
+
 
 
 
 
 {% block payment-gateway %}
  <script>
+<!--  selecet address-->
+
+        $('input[name="address"]').change(function() {
+        var address_id = $('input[name="address"]:checked').val();
+        $('#address_id').val(address_id);
+        });
+</script>
+
+<script>
+
 
     var options = {
                     "key": 'rzp_test_76zXSGrXEQqpYv', // Enter the Key ID generated from the Dashboard
@@ -132,5 +141,7 @@ varc= document.getElementById('btn').value;
                     rzp1.open();
                     e.preventDefault();
                 }
+
+
 </script>
 {% endblock payment-gateway %}
